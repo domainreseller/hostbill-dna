@@ -12,39 +12,36 @@ require_once __DIR__.'/lib/dna.php';
 
 class domainnameapi extends DomainModule{
 
-    protected $version = '1.0.46';
-
-    protected $modname = "Domain Name Api";
-
+    protected $version     = '1.0.48';
+    protected $modname     = "Domain Name Api";
     protected $description = 'Domain Name API - ICANN Accredited Domain Registrar from TURKEY ';
+    private   $dna         = null;
 
-    private $dna=null;
 
-
-    protected $configuration = array(
-        'username' => array(
-            'value' => '',
-            'type' => 'input',
+    protected $configuration = [
+        'username' => [
+            'value'   => '',
+            'type'    => 'input',
             'default' => false
-        ),
-        'password' => array(
-            'value' => '',
-            'type' => 'password',
+        ],
+        'password' => [
+            'value'   => '',
+            'type'    => 'password',
             'default' => false
-        ),
-        'testmode' => array(
-            'value' => '0',
-            'type' => 'check',
+        ],
+        'testmode' => [
+            'value'   => '0',
+            'type'    => 'check',
             'default' => '0'
-        )
-    );
+        ]
+    ];
 
     protected $lang = [
         'english' => [
             'username' => 'User Name',
             'password' => 'Password',
             'testmode' => 'Use Test Mode',
-        ] ,
+        ],
         'turkish' => [
             'username' => 'Kullanıcı Adı',
             'password' => 'Şifre',
@@ -52,9 +49,20 @@ class domainnameapi extends DomainModule{
         ]
     ];
 
-    protected $commands = ['Register', 'Transfer', 'Renew', 'ContactInfo', 'RegisterNameServers', 'EppCode'];
+    protected $commands = [
+        'Register',
+        'Transfer',
+        'Renew',
+        'ContactInfo',
+        'RegisterNameServers',
+        'EppCode'
+    ];
 
-    protected $clientCommands = ['ContactInfo', 'RegisterNameServers', 'EppCode'];
+    protected $clientCommands = [
+        'ContactInfo',
+        'RegisterNameServers',
+        'EppCode'
+    ];
 
 
     /**
@@ -90,71 +98,25 @@ class domainnameapi extends DomainModule{
         }else{
             return false;
         }
-
     }
 
-    private function _makeContact($cdata) {
-
-        $contact = [
-            "FirstName"        => mb_convert_encoding($cdata['firstname'], 'UTF-8', 'auto'),
-            "LastName"         => mb_convert_encoding($cdata['lastname'], "UTF-8", "auto"),
-            "Company"          => mb_convert_encoding($cdata['companyname'], "UTF-8", "auto"),
-            "EMail"            => mb_convert_encoding($cdata['email'], "UTF-8", "auto"),
-            "AddressLine1"     => mb_convert_encoding($cdata['address1'], "UTF-8", "auto"),
-            "AddressLine2"     => mb_convert_encoding($cdata['address2'], "UTF-8", "auto"),
-            "AddressLine3"     => mb_convert_encoding('', "UTF-8", "auto"),
-            "City"             => mb_convert_encoding($cdata['city'], "UTF-8", "auto"),
-            "Country"          => mb_convert_encoding($cdata['country'], "UTF-8", "auto"),
-            "Fax"              => mb_convert_encoding('', "UTF-8", "auto"),
-            "FaxCountryCode"   => mb_convert_encoding('', "UTF-8", "auto"),
-            "Phone"            => mb_convert_encoding($cdata['phonenumber'], "UTF-8", "auto"),
-            "PhoneCountryCode" => mb_convert_encoding('90', "UTF-8", "auto"),
-            "Type"             => mb_convert_encoding("Contact", "UTF-8", "auto"),
-            "ZipCode"          => mb_convert_encoding($cdata['postcode'], "UTF-8", "auto"),
-            "State"            => mb_convert_encoding($cdata['state'], "UTF-8", "auto")
-        ];
-
-
-        return $contact;
-    }
-    
-    private function _parseContact($type,$data){
-        $contact = [
-            'firstname'   => $data[$type]["FirstName"],
-            'lastname'    => $data[$type]["LastName"],
-            'companyname' => $data[$type]["Company"],
-            'email'       => $data[$type]["EMail"],
-            'address1'    => $data[$type]["Address"]["Line1"],
-            'address2'    => $data[$type]["Address"]["Line2"],
-            'city'        => $data[$type]["Address"]["City"],
-            'state'       => $data[$type]["Address"]["State"],
-            'postcode'    => $data[$type]["Address"]["ZipCode"],
-            'country'     => $data[$type]["Address"]["Country"],
-        ];
-        $contact['phonenumber']='+'.$data[$type]['Phone']['Phone']['CountryCode'].'.'.$data[$type]['Phone']['Phone']['Number'];
-
-        return $contact;
-    }
-
-    private function slack_message($message, $channel = "kriweb", $who = 'Seyyar Debugcu') {
-        $ch   = curl_init("https://slack.com/api/chat.postMessage");
-        $data = http_build_query([
-            "token"    => "xoxp-470845361846-468707172800-949452384309-9bfb16eb31e1a8ec1242c69d1166abce",
-            "channel"  => $channel,
-            //"#mychannel",
-            "text"     => $message,
-            //"Hello, Foo-Bar channel message.",
-            "username" => $who,
-        ]);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $result = curl_exec($ch);
-        curl_close($ch);
-        return $result;
-    }
-
+    /**
+     * Register domain name, using
+     * $this->configuration - configuration/connection details for this registrars
+     * $this->options - domain registration options array with keys:
+     * - ns1,ns2,ns3... nameservers to use
+     * - numyears - period to register for
+     * - ext - domain extended attributes (required by some tlds)
+     *
+     * $this->domain_contacts - domain contacts array with keys:
+     *  - registrant - array with registrant details
+     *  - admin - array with admin person details
+     *  - billing - array with billing person details
+     *  - tech - array with tech person details
+     *
+     * @return bool
+     * @test 15/15
+     */
     public function Register() {
 
         $nameservers=[];
@@ -206,6 +168,25 @@ class domainnameapi extends DomainModule{
 
     }
 
+
+    /**
+     * Transfer domain name, using
+     * $this->configuration - configuration/connection details for this registrars
+     * $this->options - domain registration options array with keys:
+     * - ns1,ns2,ns3... nameservers to use
+     * - numyears - period to register for
+     * - ext - domain extended attributes (required by some tlds)
+     * - epp_code - domain EPP/transfer code
+     *
+     * $this->domain_contacts - domain contacts array with keys:
+     *  - registrant - array with registrant details
+     *  - admin - array with admin person details
+     *  - billing - array with billing person details
+     *  - tech - array with tech person details
+     *
+     * @return bool
+     * @test 5/5
+     */
     public function Transfer() {
 
         $domain = $this->options['sld'] . '.' . $this->options['tld'];
@@ -237,6 +218,24 @@ class domainnameapi extends DomainModule{
 
     }
 
+
+    /**
+     * Renew registered domain name, using
+     * $this->configuration - configuration/connection details for this registrars
+     * $this->options - domain registration options array with keys:
+     * - ns1,ns2,ns3... nameservers to use
+     * - numyears - period to register for
+     * - ext - domain extended attributes (required by some tlds)
+     *
+     * $this->domain_contacts - domain contacts array with keys:
+     *  - registrant - array with registrant details
+     *  - admin - array with admin person details
+     *  - billing - array with billing person details
+     *  - tech - array with tech person details
+     *
+     * @return bool
+     * @test 6/6
+     */
     public function Renew() {
 
         $domain = $this->options['sld'] . '.' . $this->options['tld'];
@@ -268,9 +267,12 @@ class domainnameapi extends DomainModule{
     }
 
     /**
-     * Getting nameservers
-     * test : 3/3
-     * @return array|false
+     * Return array of nameservers registered for domain stored in
+     * $this->options['sld'] - domain name (without extension/tld)
+     * $this->options['tld'] - domain extension/tld
+     * @return array|bool
+     * @test 7/6
+     * @subtrimal  phonenumber_prefix
      */
     public function getNameServers() {
 
@@ -302,10 +304,16 @@ class domainnameapi extends DomainModule{
 
 
     }
+
+
+
     /**
-     * Updating nameservers
-     * test : 3/3
-     * @return array|false
+     * Update domain nameservers:
+     * $this->options['sld'] - domain name (without extension/tld)
+     * $this->options['tld'] - domain extension/tld
+     * $this->options['ns*'] - domain nameserver to save (ns1,ns2,ns3...)
+     * @return bool
+     * @test 4/4
      */
     public function updateNameServers() {
 
@@ -342,9 +350,11 @@ class domainnameapi extends DomainModule{
 
 
     /**
-     * Getting Contact
-     * test : 3/3
-     * @return array
+     * Ger array of contact information assigned to doman name, to display in contact update form
+     * $this->options['sld'] - domain name (without extension/tld)
+     * $this->options['tld'] - domain extension/tld
+     * @return array|bool
+     * @test 12/12
      */
     public function getContactInfo() {
 
@@ -365,9 +375,17 @@ class domainnameapi extends DomainModule{
     }
 
     /**
-     * Setting Contact
-     * test : 3/3
+     * Update domain contact informations related to domain name
+     *
+     * $this->options['sld'] - domain name (without extension/tld)
+     * $this->options['tld'] - domain extension/tld
+     * $this->options also holds keys of submitted values:
+     *  - registrant - array with registrant details
+     *  - admin - array with admin person details
+     *  - billing - array with billing person details
+     *  - tech - array with tech person details
      * @return bool
+     * @test 12/12
      */
     public function updateContactInfo() {
 
@@ -413,9 +431,11 @@ class domainnameapi extends DomainModule{
     }
 
     /**
-     * Getting Registrarlock
-     * test : 2/2
-     * @return false|string
+     * Return status of domain registrar lock protection
+     * $this->options['sld'] - domain name (without extension/tld)
+     * $this->options['tld'] - domain extension/tld
+     * @return bool|int 1|0
+     * @test 4/4
      */
     public function getRegistrarLock() {
 
@@ -473,9 +493,15 @@ class domainnameapi extends DomainModule{
 
 
     /**
-     * Setting registrarlock
-     * test: 2/2
-     * @return false
+     * Update status of domain registrar lock protection
+     *
+     * $this->options['registrarLock'] - submitted registrar lock value (1 or 0)
+     * $this->options['sld'] - domain name (without extension/tld)
+     * $this->options['tld'] - domain extension/tld
+     * @return bool
+     * @test 7/5
+     * @todo Same registrar lock status will be check on demand
+     * @todo unsaved statuses will be throw
      */
     public function updateRegistrarLock() {
 
@@ -562,13 +588,21 @@ class domainnameapi extends DomainModule{
 
 
     /**
-     * add childns
-     * test: 2/2
-     * @return bool
+     * Register custom Name Server at registrar
+     * Note: Not all registrars offer this feature
+     * var_dump($this->options) to examine what has been submitted from user form
+     *
+     * $this->options['sld'] - domain name (without extension/tld)
+     * $this->options['tld'] - domain extension/tld
+     * @return array|bool
+     * @test 5/5
      */
     public function registerNameServer() {
 
-        $result = $this->dna()->AddChildNameServer($this->options['sld'] . '.' . $this->options['tld'], $this->options['NameServer'], array($this->options['NameServerIP']));
+        $_d = $this->options['sld'] . '.' . $this->options['tld'];
+
+        $result = $this->dna()->AddChildNameServer($_d, $this->options['NameServer'].'.'.$_d, array($this->options['NameServerIP']));
+
 
         if ($result["result"] == "OK") {
             $this->logAction(array(
@@ -597,14 +631,23 @@ class domainnameapi extends DomainModule{
     }
 
 
-     /**
-     * modify childns
-     * test: 2/2
-     * @return bool
+    /**
+     * Update custom Name Server IP at registrar
+     * Note: Not all registrars offer this feature
+     * var_dump($this->options) to examine what has been submitted from user form
+     *
+     * $this->options['sld'] - domain name (without extension/tld)
+     * $this->options['tld'] - domain extension/tld
+     * @return array|bool
+     * @test 4/4
      */
     public function modifyNameServer() {
 
-         $result = $this->dna()->ModifyChildNameServer($this->options['sld'] . '.' . $this->options['tld'], $this->options['NameServer'], array($this->options['NameServerNewIP']));
+         $_d = $this->options['sld'] . '.' . $this->options['tld'];
+
+         $result = $this->dna()->ModifyChildNameServer($_d, $this->options['NameServer'].'.'.$_d, array($this->options['NameServerNewIP']));
+
+
 
         if ($result["result"] == "OK") {
             $this->logAction(array(
@@ -633,14 +676,21 @@ class domainnameapi extends DomainModule{
 
     }
 
-     /**
-     * delte childns
-     * test: 2/2
-     * @return bool
+    /**
+     * Delete Name Server from registrar
+     * Note: Not all registrars offer this feature
+     * var_dump($this->options) to examine what has been submitted from user form
+     *
+     * $this->options['sld'] - domain name (without extension/tld)
+     * $this->options['tld'] - domain extension/tld
+     * @return array|bool
+     * @test 2/2
      */
     public function deleteNameServer() {
 
-         $result = $this->dna()->DeleteChildNameServer($this->options['sld'] . '.' . $this->options['tld'], $this->options['NameServer']);
+
+         $_d = $this->options['sld'] . '.' . $this->options['tld'];
+         $result = $this->dna()->DeleteChildNameServer($_d, $this->options['NameServer'].'.'.$_d);
 
         if ($result["result"] == "OK") {
             $this->logAction(array(
@@ -670,9 +720,13 @@ class domainnameapi extends DomainModule{
 
 
     /**
-     * EPP
-     * test: 2/2
-     * @return bool|string
+     * Return domain EPP/Security code. This code will be sent to customer by HostBill by email.
+     *
+     * $this->options['sld'] - domain name (without extension/tld)
+     * $this->options['tld'] - domain extension/tld
+     *
+     * @return string|bool Return false if failed.
+     * @test 3/3
      */
     public function getEppCode() {
 
@@ -732,6 +786,7 @@ class domainnameapi extends DomainModule{
 
 
     /**
+     *
      * Get domain details stored at registrar to synchronize those stored in HostBill db.
      *
      * $this->options['sld'] - domain name (without extension/tld)
@@ -744,14 +799,11 @@ class domainnameapi extends DomainModule{
      *  - reglock - status of domain registrar lock
      *  - ns - array of nameservers for this domain name
      *  - idprotection - status of idprotection feature for this domain
+     * @test 3/3
      */
     public function synchInfo() {
 
         $result = $this->dna()->GetDetails($this->options['sld'] . '.' . $this->options['tld']);
-
-        //$result = $this->dna()->GetList(2);
-
-
 
         $resp=[
           'status'=>'Active',
@@ -771,67 +823,65 @@ class domainnameapi extends DomainModule{
             $resp['status']='Pending Transfer';
         }
 
-
-
-
-        //WaitingForRegistration
-        //Domain Aktif İse
-        //Active,
-
-        //Belge beklenen domainler
-        //Yenileme Modu Auto Expire İse
-        //Domain ilk kayıtta ise
-        //WaitingForRegistration,
-
-        //Belge Bekleyen Domainler
-        //WaitingForDocument,//2
-
-        //İç Transfer Talebi
-        //WaitingForIncomingTransfer,//3
-
-        //Dışarıya TRansfer Oldu
-        //TransferredOut,//4
-
-        // Bize gelen transfer dışardan iptal edildi.
-        //TransferRejectedFromOpposed,//5
-
-        //Bize gelen transfer bayi tarafından iptal edildi
-        //TransferCancelledFromClient,//6
-
-        // Silinmek İçin Bekleniyor
-        //PendingDelete,//7
-
-        //Silindi
-        //Deleted,//8
-
-        //Transferler için email onayı iletildi.
-        //ConfirmationEmailSend,//9
-
-        //Hiçbiri
-        //None,//10
-
-        //Yeni kayıt edilen domainlerde önkayıt işlemi
-        //PreRegistration,//11
-
-        //Domain Bizden Transfer Ediliyor
-        //WaitingForOutgoingTransfer,//12,
-
-        //Domain durduruldu
-        //PendingHold,//13
-
-        // Snkronize olamama durumunda
-        //SynchronizationBlocked,//14
-
-        //Zaman Aşımına uğrayan domainler // 15
-        //TimeOut,
-
-        //Güncelleme Bekleniyor //16
-        //ModificationPending,
-        //MigrationPending, //17
-        //ModificationFailed//18,
-
-
+        return $resp;
 
     }
+
+    /**
+     * This is private parsing function. No handler on hostbill
+     * @param $cdata
+     * @return array
+     */
+    private function _makeContact($cdata) {
+
+        $contact = [
+            "FirstName"        => mb_convert_encoding($cdata['firstname'], 'UTF-8', 'auto'),
+            "LastName"         => mb_convert_encoding($cdata['lastname'], "UTF-8", "auto"),
+            "Company"          => mb_convert_encoding($cdata['companyname'], "UTF-8", "auto"),
+            "EMail"            => mb_convert_encoding($cdata['email'], "UTF-8", "auto"),
+            "AddressLine1"     => mb_convert_encoding($cdata['address1'], "UTF-8", "auto"),
+            "AddressLine2"     => mb_convert_encoding($cdata['address2'], "UTF-8", "auto"),
+            "AddressLine3"     => mb_convert_encoding('', "UTF-8", "auto"),
+            "City"             => mb_convert_encoding($cdata['city'], "UTF-8", "auto"),
+            "Country"          => mb_convert_encoding($cdata['country'], "UTF-8", "auto"),
+            "Fax"              => mb_convert_encoding('', "UTF-8", "auto"),
+            "FaxCountryCode"   => mb_convert_encoding('', "UTF-8", "auto"),
+            "Phone"            => mb_convert_encoding($cdata['phonenumber'], "UTF-8", "auto"),
+            "PhoneCountryCode" => mb_convert_encoding('90', "UTF-8", "auto"),
+            "Type"             => mb_convert_encoding("Contact", "UTF-8", "auto"),
+            "ZipCode"          => mb_convert_encoding($cdata['postcode'], "UTF-8", "auto"),
+            "State"            => mb_convert_encoding($cdata['state'], "UTF-8", "auto")
+        ];
+
+
+        return $contact;
+    }
+
+
+    /**
+     * This is private parsing function. No handler on hostbill
+     * @param $type
+     * @param $data
+     * @return array
+     */
+    private function _parseContact($type,$data){
+        $contact = [
+            'firstname'   => $data[$type]["FirstName"],
+            'lastname'    => $data[$type]["LastName"],
+            'companyname' => $data[$type]["Company"],
+            'email'       => $data[$type]["EMail"],
+            'address1'    => $data[$type]["Address"]["Line1"],
+            'address2'    => $data[$type]["Address"]["Line2"],
+            'city'        => $data[$type]["Address"]["City"],
+            'state'       => $data[$type]["Address"]["State"],
+            'postcode'    => $data[$type]["Address"]["ZipCode"],
+            'country'     => $data[$type]["Address"]["Country"],
+        ];
+        $contact['phonenumber']='+'.$data[$type]['Phone']['Phone']['CountryCode'].'.'.$data[$type]['Phone']['Phone']['Number'];
+
+        return $contact;
+    }
+
+
 
 }
