@@ -48,10 +48,19 @@ class APIConnection_SOAP extends APIConnection
         $this->URL_SERVICE = $Service_URL;
 
         // Set WSDL caching enabled     
-        ini_set('soap.wsdl_cache_enabled', '1'); ini_set('soap.wsdl_cache_ttl', '86400'); 
+        ini_set('soap.wsdl_cache_enabled', '1'); ini_set('soap.wsdl_cache_ttl', '86400');
+
+        $context = stream_context_create([
+            'ssl' => [
+                // set some SSL/TLS specific options
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            ]
+        ]);
 
         // Create unique connection
-        $this->service = new SoapClient($this->URL_SERVICE . "?singlewsdl", array("cache_wsdl" => WSDL_CACHE_MEMORY,  "encoding"=>"UTF-8")); 
+        $this->service = new SoapClient($this->URL_SERVICE . "?singlewsdl", array("cache_wsdl" => WSDL_CACHE_MEMORY,  "encoding"=>"UTF-8", "stream_context" => $context));
     }
     function APIConnection_SOAP($Service_URL) 
     {
@@ -1779,7 +1788,7 @@ class DomainNameAPI_PHPLibrary
         if($page>1){
             $parameters['request']['PageNumber']=$page;
         }
-        $parameters['request']['OrderDirection']='Status';
+        //$parameters['request']['OrderDirection']='Status';
 
 
         // Get domain id via already prepared connection
