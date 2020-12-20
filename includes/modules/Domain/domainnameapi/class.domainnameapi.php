@@ -12,7 +12,7 @@ require_once __DIR__.'/lib/dna.php';
 
 class domainnameapi extends DomainModule{
 
-    protected $version     = '1.0.48';
+    protected $version     = '1.0.52';
     protected $modname     = "Domain Name Api";
     protected $description = 'Domain Name API - ICANN Accredited Domain Registrar from TURKEY ';
     private   $dna         = null;
@@ -92,6 +92,7 @@ class domainnameapi extends DomainModule{
     public function testConnection() {
 
         $result = $this->dna()->GetList();
+
 
         if($result["result"] == "OK"){
             return true;
