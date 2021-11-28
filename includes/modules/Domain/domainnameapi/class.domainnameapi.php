@@ -84,6 +84,8 @@ class domainnameapi extends DomainModule{
         return $this->dna;
     }
 
+
+
     /**
      * Checking connection
      * Test:1/1
@@ -92,6 +94,8 @@ class domainnameapi extends DomainModule{
     public function testConnection() {
 
         $result = $this->dna()->GetList();
+
+
 
 
         if($result["result"] == "OK"){
