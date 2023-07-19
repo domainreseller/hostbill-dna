@@ -85,8 +85,7 @@ class domainnameapi extends DomainModule{
     }
 
 
-
-    /**
+         /**
      * Checking connection
      * Test:1/1
      * @return bool
@@ -94,7 +93,6 @@ class domainnameapi extends DomainModule{
     public function testConnection() {
 
         $result = $this->dna()->GetList();
-
 
 
 
@@ -146,7 +144,6 @@ class domainnameapi extends DomainModule{
             "Registrant"     => $this->_makeContact($this->domain_contacts['registrant']),
         ];
 
-        //$this->slack_message(json_encode([$this->options,$this->domain_contacts,$nameservers,$contacts,$period,$domain]));
 
         $result = $this->dna()->RegisterWithContactInfo($domain,$period,$contacts,$nameservers,$idprotection,$privacy);
 
@@ -365,8 +362,6 @@ class domainnameapi extends DomainModule{
 
         $result =$this->dna()->GetContacts($this->options['sld'].'.'.$this->options['tld']);
 
-        //$this->slack_message(json_encode($result));
-
 
         $contact = [
             'registrant' => $this->_parseContact('Registrant', $result["data"]["contacts"]),
@@ -403,7 +398,6 @@ class domainnameapi extends DomainModule{
 
         $result = $this->dna()->SaveContacts($this->options['sld'] . '.' . $this->options['tld'], $updateArr);
 
-        // $this->slack_message(json_encode([$this->options,$updateArr]));
 
         if ($result["result"] == "OK") {
             $this->logAction(array(

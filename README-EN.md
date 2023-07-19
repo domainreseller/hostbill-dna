@@ -10,32 +10,33 @@
 </div>
 
 
-# Genel Bakış
+# Overview
 
-**DomainNameApi**, küçük ve ev tabanlı işletmelere, bireylere, trafik toplayıcılara ve yeniden satıcılara alan adı kaydı ve diğer çevrimiçi hizmetler sağlayan önde gelen bir alan adı kayıt firmasıdır. HostBill, **DomainNameApi** alan adı oluşturma ve yönetimini otomatikleştirmenizi sağlar.
+**DomainNameApi** is a leading domain name registrar providing domain name registration and other online services to small and home-based businesses, individuals, traffic aggregators and resellers. HostBill allows you to automate **DomainNameApi** domain provisioning and management.
 
-## Modülün Aktifleştirilmesi
-Öncelikle dosyaları HostBill dizinine yüklemeniz gerekmektedir:
+## Activating the module
+First you need to upload files to your HostBill directory:
 
-Modülü aktifleştirmek için HostBill yönetici panelinize giriş yapın, Ayarlar → Modüller → Alan Adı Modülleri'ne gidin, **DomainNameApi** modülünü bulun ve Aktifleştir'e tıklayın.
+In order to activate the module login to your HostBill admin panel, go to Settings → Modules → Domain Modules, find and choose **DomainNameApi** module and click Activate.
 
 ![](image.jpg)
 
-## Modül Konfigürasyonu
+## Module configuration
 
-Modülü aktifleştirdikten sonra modül konfigürasyon sayfasına yönlendirilirsiniz. Aktifleştirilen modülü yapılandırmak için Ayarlar → Uygulamalar → Yeni Uygulama Ekle'ye de gidebilirsiniz.
+Once you activate the module you will be redirected to module configuration page. To configure the activated module you can also go to Settings → Apps → Add New App.
 
-Konfigürasyon alanlarını doldurun:
+Fill in the configuration fields:
 
-- Uygulamanın adı
-- Kullanıcı adı
-- Parola
+- Name of the application
+- Username
+- Password
 
-Daha sonra nameserver'larınızı eklemeye geçin:
+Then proceed to adding your nameservers:
 
-- Birincil Nameserver
-- Birincil Nameserver IP
+- Primary Nameserver
+- Primary Nameserver IP
 
-HostBill'in bağlanıp bağlanamadığını kontrol etmek için Test Konfigürasyonu'nu kullanın.
+Use Test Configuration to check if HostBill can connect.
 
-Yeni Uygulama Ekle'ye tıklayın.
+Click on Add New App.
+

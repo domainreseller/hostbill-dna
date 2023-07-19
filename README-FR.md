@@ -10,32 +10,32 @@
 </div>
 
 
-# Genel Bakış
+# Aperçu
 
-**DomainNameApi**, küçük ve ev tabanlı işletmelere, bireylere, trafik toplayıcılara ve yeniden satıcılara alan adı kaydı ve diğer çevrimiçi hizmetler sağlayan önde gelen bir alan adı kayıt firmasıdır. HostBill, **DomainNameApi** alan adı oluşturma ve yönetimini otomatikleştirmenizi sağlar.
+**DomainNameApi** est un registraire de noms de domaine de premier plan qui fournit l'enregistrement de noms de domaine et d'autres services en ligne pour les petites entreprises, les entreprises à domicile, les individus, les agrégateurs de trafic et les revendeurs. HostBill vous permet d'automatiser la fourniture et la gestion de domaine **DomainNameApi**.
 
-## Modülün Aktifleştirilmesi
-Öncelikle dosyaları HostBill dizinine yüklemeniz gerekmektedir:
+## Activation du module
+Tout d'abord, vous devez télécharger les fichiers dans votre répertoire HostBill:
 
-Modülü aktifleştirmek için HostBill yönetici panelinize giriş yapın, Ayarlar → Modüller → Alan Adı Modülleri'ne gidin, **DomainNameApi** modülünü bulun ve Aktifleştir'e tıklayın.
+Pour activer le module, connectez-vous à votre panneau d'administration HostBill, allez dans Paramètres → Modules → Modules de domaine, recherchez et choisissez le module **DomainNameApi** et cliquez sur Activer.
 
 ![](image.jpg)
 
-## Modül Konfigürasyonu
+## Configuration du module
 
-Modülü aktifleştirdikten sonra modül konfigürasyon sayfasına yönlendirilirsiniz. Aktifleştirilen modülü yapılandırmak için Ayarlar → Uygulamalar → Yeni Uygulama Ekle'ye de gidebilirsiniz.
+Une fois le module activé, vous serez redirigé vers la page de configuration du module. Pour configurer le module activé, vous pouvez également aller dans Paramètres → Applications → Ajouter une nouvelle application.
 
-Konfigürasyon alanlarını doldurun:
+Remplissez les champs de configuration:
 
-- Uygulamanın adı
-- Kullanıcı adı
-- Parola
+- Nom de l'application
+- Nom d'utilisateur
+- Mot de passe
 
-Daha sonra nameserver'larınızı eklemeye geçin:
+Puis procédez à l'ajout de vos serveurs de noms:
 
-- Birincil Nameserver
-- Birincil Nameserver IP
+- Serveur de noms primaire
+- IP du serveur de noms primaire
 
-HostBill'in bağlanıp bağlanamadığını kontrol etmek için Test Konfigürasyonu'nu kullanın.
+Utilisez la configuration de test pour vérifier si HostBill peut se connecter.
 
-Yeni Uygulama Ekle'ye tıklayın.
+Cliquez sur Ajouter une nouvelle application.

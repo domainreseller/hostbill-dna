@@ -9,33 +9,32 @@
   <a href="README-NL.md"> | NL <img style="padding-top: 8px" src="https://raw.githubusercontent.com/yammadev/flag-icons/master/png/NL.png" alt="NL" height="20" /></a>  
 </div>
 
+# 概述
 
-# Genel Bakış
+**DomainNameApi** 是一家领先的域名注册商，为小型和家庭型企业、个人、流量聚合器和分销商提供域名注册和其他在线服务。HostBill允许您自动化**DomainNameApi**域名供应和管理。
 
-**DomainNameApi**, küçük ve ev tabanlı işletmelere, bireylere, trafik toplayıcılara ve yeniden satıcılara alan adı kaydı ve diğer çevrimiçi hizmetler sağlayan önde gelen bir alan adı kayıt firmasıdır. HostBill, **DomainNameApi** alan adı oluşturma ve yönetimini otomatikleştirmenizi sağlar.
+## 激活模块
+首先，您需要将文件上传到您的HostBill目录：
 
-## Modülün Aktifleştirilmesi
-Öncelikle dosyaları HostBill dizinine yüklemeniz gerekmektedir:
-
-Modülü aktifleştirmek için HostBill yönetici panelinize giriş yapın, Ayarlar → Modüller → Alan Adı Modülleri'ne gidin, **DomainNameApi** modülünü bulun ve Aktifleştir'e tıklayın.
+要激活模块，请登录您的HostBill管理员面板，进入设置 → 模块 → 域名模块，找到并选择**DomainNameApi**模块，然后点击激活。
 
 ![](image.jpg)
 
-## Modül Konfigürasyonu
+## 模块配置
 
-Modülü aktifleştirdikten sonra modül konfigürasyon sayfasına yönlendirilirsiniz. Aktifleştirilen modülü yapılandırmak için Ayarlar → Uygulamalar → Yeni Uygulama Ekle'ye de gidebilirsiniz.
+一旦你激活了这个模块，你会被重定向到模块配置页面。为了配置激活的模块，您也可以前往设置 → 应用程序 → 添加新应用程序。
 
-Konfigürasyon alanlarını doldurun:
+填写配置字段：
 
-- Uygulamanın adı
-- Kullanıcı adı
-- Parola
+- 应用程序名称
+- 用户名
+- 密码
 
-Daha sonra nameserver'larınızı eklemeye geçin:
+然后继续添加您的域名服务器：
 
-- Birincil Nameserver
-- Birincil Nameserver IP
+- 主域名服务器
+- 主域名服务器IP
 
-HostBill'in bağlanıp bağlanamadığını kontrol etmek için Test Konfigürasyonu'nu kullanın.
+使用测试配置检查HostBill是否可以连接。
 
-Yeni Uygulama Ekle'ye tıklayın.
+点击添加新应用程序。

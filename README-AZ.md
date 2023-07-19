@@ -10,32 +10,32 @@
 </div>
 
 
-# Genel Bakış
+# Genel Baxış
 
-**DomainNameApi**, küçük ve ev tabanlı işletmelere, bireylere, trafik toplayıcılara ve yeniden satıcılara alan adı kaydı ve diğer çevrimiçi hizmetler sağlayan önde gelen bir alan adı kayıt firmasıdır. HostBill, **DomainNameApi** alan adı oluşturma ve yönetimini otomatikleştirmenizi sağlar.
+**DomainNameApi**, kiçik və ev əsaslı işlərə, fərdlərə, trafik yığıcılarına və yeniden satıcılara domen adı qeydiyyatı və digər onlayn xidmətlər təqdim edən öndə gələn bir domen adı qeydiyyatçısıdır. HostBill sizə **DomainNameApi** domen təminatı və idarəetməni avtomatlaşdırmağa imkan verir.
 
-## Modülün Aktifleştirilmesi
-Öncelikle dosyaları HostBill dizinine yüklemeniz gerekmektedir:
+## Modulun Aktivləşdirilməsi
+İlk olaraq, faylları HostBill direktoriyanıza yükləməlisiniz:
 
-Modülü aktifleştirmek için HostBill yönetici panelinize giriş yapın, Ayarlar → Modüller → Alan Adı Modülleri'ne gidin, **DomainNameApi** modülünü bulun ve Aktifleştir'e tıklayın.
+Modulu aktivləşdirmək üçün HostBill admin panelinə daxil olun, Parametrlər → Modullar → Domen Modulları'na keçin, **DomainNameApi** modulunu tapın və Aktivləşdir'e vurun.
 
 ![](image.jpg)
 
-## Modül Konfigürasyonu
+## Modul Konfiqurasiyası
 
-Modülü aktifleştirdikten sonra modül konfigürasyon sayfasına yönlendirilirsiniz. Aktifleştirilen modülü yapılandırmak için Ayarlar → Uygulamalar → Yeni Uygulama Ekle'ye de gidebilirsiniz.
+Modulu aktivləşdirdikdən sonra modul konfiqurasiya səhifəsinə yönləndiriləcəksiniz. Aktivləşdirilmiş modulu konfiqurasiya etmək üçün Parametrlər → Tətbiqlər → Yeni Tətbiq Əlavə Et'ə də gedə bilərsiniz.
 
-Konfigürasyon alanlarını doldurun:
+Konfiqurasiya sahələrini doldurun:
 
-- Uygulamanın adı
-- Kullanıcı adı
-- Parola
+- Tətbiqin adı
+- İstifadəçi adı
+- Şifrə
 
-Daha sonra nameserver'larınızı eklemeye geçin:
+Daha sonra nameserver'larınızı əlavə etməyə keçin:
 
-- Birincil Nameserver
-- Birincil Nameserver IP
+- Birinci Nameserver
+- Birinci Nameserver IP
 
-HostBill'in bağlanıp bağlanamadığını kontrol etmek için Test Konfigürasyonu'nu kullanın.
+HostBill'in bağlana bilməsini yoxlamaq üçün Test Konfiqurasiyasını istifadə edin.
 
-Yeni Uygulama Ekle'ye tıklayın.
+Yeni Tətbiq Əlavə Et'e vurun.
