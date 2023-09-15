@@ -96,7 +96,9 @@ class domainnameapi extends DomainModule{
 
         $result = $this->dna()->GetCurrentBalance();
 
-        if($result["result"] == "OK"){
+
+
+        if($result["ErrorCode"] == 0){
             return true;
         }else{
             return false;
