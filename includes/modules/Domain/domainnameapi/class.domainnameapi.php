@@ -15,6 +15,10 @@ class domainnameapi extends DomainModule{
     protected $version     = '1.0.52';
     protected $modname     = "Domain Name Api";
     protected $description = 'Domain Name API - ICANN Accredited Domain Registrar from TURKEY ';
+
+    /**
+     * @var null DomainNameAPI_PHPLibrary
+     */
     private   $dna         = null;
 
 
@@ -70,16 +74,14 @@ class domainnameapi extends DomainModule{
      */
     private function dna(){
 
-        if($this->dna==null){
-            $this->dna = new  \DomainNameAPI_PHPLibrary();
-        }
+        $testmode = false;
         if ($this->configuration['testmode']['value'] == '1'){
-            $this->dna->useTestMode(true);
-        }else{
-            $this->dna->useTestMode(false);
+            $testmode=true;
         }
-        $this->dna->setUser($this->configuration['username']['value'],$this->configuration['password']['value']);
-        $this->dna->useCaching(false);
+
+        if($this->dna==null){
+            $this->dna = new \DomainNameApi\DomainNameAPI_PHPLibrary($this->configuration['username']['value'],$this->configuration['password']['value'],$testmode);
+        }
 
         return $this->dna;
     }
@@ -92,9 +94,7 @@ class domainnameapi extends DomainModule{
      */
     public function testConnection() {
 
-        $result = $this->dna()->GetList();
-
-
+        $result = $this->dna()->GetCurrentBalance();
 
         if($result["result"] == "OK"){
             return true;
@@ -282,18 +282,17 @@ class domainnameapi extends DomainModule{
 
         if ($result["result"] == "OK") {
             $values = [];
-            if (is_array($result["data"]["NameServers"][0])) {
 
-                foreach (range(1, 5) as $k => $v) {
-                    if (isset($result["data"]["NameServers"][0][$k])) {
-                        $values[$v] = $result["data"]["NameServers"][0][$k];
+            if (is_array($result["data"]["NameServers"])) {
+                foreach ([0, 1, 2, 3, 4] as $k => $v) {
+                    if (isset($result["data"]["NameServers"][$v])) {
+                        $values[$v] = $result["data"]["NameServers"][$v];
                     }
                 }
-
             } else {
-
-                if (isset($result["data"]["NameServers"][0])) {
-                    $values[1] = $result["data"]["NameServers"][0];
+                // Only one nameserver
+                if (isset($result["data"]["NameServers"])) {
+                    $values[1] = $result["data"]["NameServers"];
                 }
             }
             return $values;
@@ -804,12 +803,12 @@ class domainnameapi extends DomainModule{
 
         $result = $this->dna()->GetDetails($this->options['sld'] . '.' . $this->options['tld']);
 
-        $resp=[
-          'status'=>'Active',
-          'expires'=>date('Y-m-d',strtotime($result['data']['Dates']['Expiration'])),
-          'reglock'=>$result['data']['LockStatus']=='true',
-          'ns'=>$result['date']['NameServers'][0],
-          'idprotection'=>$result['data']['PrivacyProtectionStatus']==true
+        $resp = [
+            'status'       => 'Active',
+            'expires'      => date('Y-m-d', strtotime($result['data']['Dates']['Expiration'])),
+            'reglock'      => $result['data']['LockStatus'] == 'true',
+            'ns'           => $result['date']['NameServers'][0],
+            'idprotection' => $result['data']['PrivacyProtectionStatus'] == true
         ];
 
         if(in_array($result['data']['Status'],['WaitingForRegistration', 'WaitingForDocument', 'ConfirmationEmailSend', 'PreRegistration', 'PendingHold'])){
