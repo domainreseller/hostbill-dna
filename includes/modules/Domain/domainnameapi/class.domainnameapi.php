@@ -12,7 +12,7 @@ require_once __DIR__.'/lib/dna.php';
 
 class domainnameapi extends DomainModule{
 
-    protected $version     = '1.0.52';
+    protected $version     = '1.1.0';
     protected $modname     = "Domain Name Api";
     protected $description = 'Domain Name API - ICANN Accredited Domain Registrar from TURKEY ';
 
