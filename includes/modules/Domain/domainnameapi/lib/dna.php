@@ -398,12 +398,12 @@ class DomainNameAPI_PHPLibrary
 
     /**
      * Checks the availability of specified domain names with given extensions
-     *
+     * 
      * @param array  $domains     Array of domain names to check (e.g., ['example', 'test'])
      * @param array  $extensions  Array of extensions to check (e.g., ['.com', '.net'])
      * @param int    $period      Registration period in years
      * @param string $Command     Operation type ('create', 'renew', 'transfer', etc.)
-     *
+     * 
      * @return array {
      *     @type string "TLD"         Top-level domain extension
      *     @type string "DomainName"  Full domain name
@@ -470,7 +470,7 @@ class DomainNameAPI_PHPLibrary
 
     /**
      * Hesabınızdaki alan adlarının listesini getirir
-     *
+     * 
      * @param array $extra_parameters İsteğe bağlı ek parametreler {
      *     @type int    "PageNumber"     Sayfa numarası (varsayılan: 1)
      *     @type int    "PageSize"       Sayfa başına sonuç sayısı (varsayılan: 100)
@@ -479,7 +479,7 @@ class DomainNameAPI_PHPLibrary
      *     @type string "SortField"      Sıralama alanı ('DomainName', 'ExpirationDate', vb.)
      *     @type string "SortOrder"      Sıralama yönü ('ASC', 'DESC')
      * }
-     *
+     * 
      * @return array {
      *     @type string "result"      İşlem sonucu ('OK' veya 'ERROR')
      *     @type int    "TotalCount"  Toplam alan adı sayısı
@@ -549,9 +549,9 @@ class DomainNameAPI_PHPLibrary
 
     /**
      * Retrieves TLD list and pricing matrix required for price and TLD synchronization
-     *
+     * 
      * @param int $count Number of results to return per page (default: 20)
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data"    Array of TLD information [
@@ -639,9 +639,9 @@ class DomainNameAPI_PHPLibrary
 
     /**
      * Retrieves detailed information for a specific domain
-     *
+     * 
      * @param string $domainName The domain name to query
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -704,10 +704,10 @@ class DomainNameAPI_PHPLibrary
 
     /**
      * Modifies nameservers for a specified domain
-     *
+     * 
      * @param string $domainName  The domain name to modify nameservers for
      * @param array  $nameServers Array of nameserver addresses (e.g., ['ns1.example.com', 'ns2.example.com'])
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -719,7 +719,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When nameservers array is invalid or empty
      */
     public function ModifyNameServer($domainName, $nameServers)
@@ -749,9 +749,9 @@ class DomainNameAPI_PHPLibrary
 
     /**
      * Enable Theft Protection Lock (Registry Lock) for a domain
-     *
+     * 
      * @param string $domainName The domain name to enable theft protection for
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -763,7 +763,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When domain name is invalid or operation fails
      */
     public function EnableTheftProtectionLock($domainName)
@@ -790,9 +790,9 @@ class DomainNameAPI_PHPLibrary
 
     /**
      * Disable Theft Protection Lock (Registry Lock) for a domain
-     *
+     * 
      * @param string $domainName The domain name to disable theft protection for
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -804,7 +804,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When domain name is invalid or operation fails
      */
     public function DisableTheftProtectionLock($domainName)
@@ -832,11 +832,11 @@ class DomainNameAPI_PHPLibrary
 
     /**
      * Adds a child nameserver for a domain
-     *
+     * 
      * @param string $domainName The domain name to add child nameserver for
      * @param string $nameServer The hostname of the child nameserver (e.g., 'ns1.mydomain.com')
      * @param string $ipAddress  The IP address for the child nameserver
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -849,7 +849,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When parameters are invalid or operation fails
      */
     public function AddChildNameServer($domainName, $nameServer, $ipAddress)
@@ -879,10 +879,10 @@ class DomainNameAPI_PHPLibrary
 
     /**
      * Deletes a child nameserver from a domain
-     *
+     * 
      * @param string $domainName The domain name to remove child nameserver from
      * @param string $nameServer The hostname of the child nameserver to delete (e.g., 'ns1.mydomain.com')
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -894,7 +894,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When parameters are invalid or nameserver doesn't exist
      */
     public function DeleteChildNameServer($domainName, $nameServer)
@@ -922,11 +922,11 @@ class DomainNameAPI_PHPLibrary
 
         /**
      * Modifies IP address of a child nameserver for a domain
-     *
+     * 
      * @param string $domainName The domain name that owns the child nameserver
      * @param string $nameServer The hostname of the child nameserver to modify (e.g., 'ns1.mydomain.com')
      * @param string $ipAddress  The new IP address to assign to the child nameserver
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -939,7 +939,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When parameters are invalid or nameserver doesn't exist
      */
     public function ModifyChildNameServer($domainName, $nameServer, $ipAddress)
@@ -971,9 +971,9 @@ class DomainNameAPI_PHPLibrary
 
         /**
      * Retrieves all contact information for a domain (Administrative, Billing, Technical, Registrant)
-     *
+     * 
      * @param string $domainName The domain name to get contacts for
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -1016,7 +1016,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When domain name is invalid or contacts cannot be retrieved
      */
     public function GetContacts($domainName)
@@ -1067,7 +1067,7 @@ class DomainNameAPI_PHPLibrary
 
        /**
      * Saves or updates contact information for all contact types of a domain
-     *
+     * 
      * @param string $domainName The domain name to update contacts for
      * @param array  $contacts   Array containing all contact information {
      *     @type array "Administrative" {
@@ -1099,7 +1099,7 @@ class DomainNameAPI_PHPLibrary
      *     @type array "Technical"      Similar structure as Administrative
      *     @type array "Registrant"     Similar structure as Administrative
      * }
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "error"   Error details if operation fails {
@@ -1108,7 +1108,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When parameters are invalid or contact update fails
      */
     public function SaveContacts($domainName, $contacts)
@@ -1155,11 +1155,11 @@ class DomainNameAPI_PHPLibrary
     // Start domain transfer (Incoming domain)
     /**
      * Initiates a domain transfer to your account
-     *
+     * 
      * @param string $domainName The domain name to transfer
      * @param string $eppCode    Authorization/EPP code from current registrar
      * @param int    $period     Transfer period in years
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -1181,7 +1181,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When parameters are invalid, EPP code is incorrect, or domain is not eligible for transfer
      */
     public function Transfer($domainName, $eppCode, $period)
@@ -1232,9 +1232,9 @@ class DomainNameAPI_PHPLibrary
 
         /**
      * Cancels a pending incoming transfer request for a domain
-     *
+     * 
      * @param string $domainName The domain name to cancel transfer for
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -1246,7 +1246,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When domain name is invalid or transfer cannot be cancelled
      */
     public function CancelTransfer($domainName)
@@ -1275,9 +1275,9 @@ class DomainNameAPI_PHPLibrary
 
         /**
      * Approves a pending outgoing transfer request for a domain
-     *
+     * 
      * @param string $domainName The domain name to approve transfer for
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -1289,7 +1289,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When domain name is invalid, transfer is not pending, or approval fails
      */
     public function ApproveTransfer($domainName)
@@ -1317,9 +1317,9 @@ class DomainNameAPI_PHPLibrary
 
         /**
      * Rejects a pending outgoing transfer request for a domain
-     *
+     * 
      * @param string $domainName The domain name to reject transfer for
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -1331,7 +1331,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When domain name is invalid, transfer is not pending, or rejection fails
      */
     public function RejectTransfer($domainName)
@@ -1360,10 +1360,10 @@ class DomainNameAPI_PHPLibrary
 
         /**
      * Renews a domain registration for specified period
-     *
+     * 
      * @param string $domainName The domain name to renew
      * @param int    $period     Renewal period in years
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -1375,7 +1375,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When domain name is invalid, period is invalid, or renewal fails
      */
     public function Renew($domainName, $period)
@@ -1413,7 +1413,7 @@ class DomainNameAPI_PHPLibrary
 
         /**
      * Registers a new domain with complete contact information
-     *
+     * 
      * @param string $domainName The domain name to register
      * @param int    $period     Registration period in years
      * @param array  $contacts   Array containing all contact information {
@@ -1450,7 +1450,7 @@ class DomainNameAPI_PHPLibrary
      * @param bool   $eppLock           Whether to enable EPP lock (default: true)
      * @param bool   $privacyLock       Whether to enable privacy protection (default: false)
      * @param array  $addionalAttributes Optional additional attributes for specific TLDs
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -1472,7 +1472,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When parameters are invalid or registration fails
      */
     public function RegisterWithContactInfo(
@@ -1538,11 +1538,11 @@ class DomainNameAPI_PHPLibrary
 
     /**
      * Modifies the privacy protection status of a domain
-     *
+     * 
      * @param string $domainName The domain name to modify privacy protection for
      * @param bool   $status     New privacy protection status (true to enable, false to disable)
      * @param string $reason     Reason for the modification (default: "Owner request")
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -1554,7 +1554,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When domain name is invalid, status change is not allowed, or operation fails
      */
     public function ModifyPrivacyProtectionStatus($domainName, $status, $reason = self::DEFAULT_REASON)
@@ -1580,9 +1580,9 @@ class DomainNameAPI_PHPLibrary
 
         /**
      * Synchronizes domain information with the registry
-     *
+     * 
      * @param string $domainName The domain name to synchronize
-     *
+     * 
      * @return array {
      *     @type string "result"  Operation result ('OK' or 'ERROR')
      *     @type array  "data" {
@@ -1614,7 +1614,7 @@ class DomainNameAPI_PHPLibrary
      *         @type string "Details" Detailed error information
      *     }
      * }
-     *
+     * 
      * @throws Exception When domain name is invalid or synchronization fails
      */
     public function SyncFromRegistry($domainName)
@@ -2096,7 +2096,7 @@ class DomainNameAPI_PHPLibrary
         //preg_match('/\.com\.tr|\.net\.tr|\.org\.tr|\.biz\.tr|\.info\.tr|\.tv\.tr|\.gen\.tr|\.web\.tr|\.tel\.tr|\.name\.tr|\.bbs\.tr|\.gov\.tr|\.bel\.tr|\.pol\.tr|\.edu\.tr|\.k12\.tr|\.av\.tr|\.dr\.tr$/',  $domain, $result);
 
         preg_match('/\.tr$/', $domain, $result);
-
+        
         return isset($result[0]);
     }
 
