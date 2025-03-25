@@ -39,3 +39,33 @@ Puis procédez à l'ajout de vos serveurs de noms:
 Utilisez la configuration de test pour vérifier si HostBill peut se connecter.
 
 Cliquez sur Ajouter une nouvelle application.
+
+# Importation de domaines
+
+Allez dans Extras -> Importer -> Importer des services. Le module Domainnameapi devrait apparaître dans la liste. Sélectionnez-le et cliquez sur Continuer.
+![img_1.png](img_1.png)
+Les noms de domaine seront listés. Vous pouvez faire correspondre les clients et les produits et les importer.
+
+![img.png](img.png)
+
+# Tarification des domaines
+
+Allez dans Extras -> Importer -> Prix TLD, Créez un profil.
+Remplissez attentivement les tarifs et autres paramètres.
+
+![img_2.png](img_2.png)
+
+# Paramètres de requête de domaine
+
+Pour définir les paramètres de requête pour une extension, allez dans l'onglet Paramètres -> Paramètres de domaine.
+![img_3.png](img_3.png)
+Lors de la modification de l'extension, sélectionnez Domainnameapi comme moteur Whois et vérification de conformité. Ainsi, vos requêtes seront effectuées via Domainnameapi au lieu des serveurs whois généraux.
+Note : Pour cette opération, vous devez renommer le fichier whois.custom.php.example dans le répertoire Hostbill > includes > extend > whois en whois.custom.php.
+
+![img_4.png](img_4.png)
+
+# Prérequis pour le processus d'enregistrement de domaine TR
+Allez dans Paramètres -> Produits -> Sélectionnez votre produit de domaine, sélectionnez pour modifier le domaine *.tr. Lorsque vous arrivez à l'onglet Extensions, vous verrez un avertissement concernant les champs de domaine supplémentaires. Ajoutez-le.
+![img_5.png](img_5.png)
+Modifiez toutes les informations sauf le nom de la variable selon vos souhaits, et supprimez également la case à cocher "Obligatoire" dans l'onglet "Avancé" (Si vous ne le faites pas, les clients devront remplir ces champs lors de l'enregistrement du domaine.)
+![img_6.png](img_6.png)

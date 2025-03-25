@@ -37,3 +37,33 @@ Ga vervolgens verder met het toevoegen van uw nameservers:
 Gebruik de Test Configuratie om te controleren of HostBill kan verbinden.
 
 Klik op Nieuwe App toevoegen.
+
+# Domein Import
+
+Ga naar Extra's -> Importeren -> Diensten importeren. De Domainnameapi module zou in de lijst moeten verschijnen. Selecteer deze en klik op Doorgaan.
+![img_1.png](img_1.png)
+Domeinnamen worden weergegeven. U kunt klanten en producten koppelen en importeren.
+
+![img.png](img.png)
+
+# Domein Prijzen
+
+Ga naar Extra's -> Importeren -> TLD Prijzen, Maak een profiel aan.
+Vul zorgvuldig de tarieven en andere instellingen in.
+
+![img_2.png](img_2.png)
+
+# Domein Query Instellingen
+
+Om query-instellingen voor een extensie in te stellen, ga naar het tabblad Instellingen -> Domein Instellingen.
+![img_3.png](img_3.png)
+Bij het bewerken van de extensie, selecteer Domainnameapi als Whois engine en Conformiteitscontrole. Op deze manier worden uw queries via Domainnameapi uitgevoerd in plaats van algemene whois servers.
+Opmerking: Voor deze bewerking moet u het bestand whois.custom.php.example in de Hostbill Directory > includes > extend > whois hernoemen naar whois.custom.php.
+
+![img_4.png](img_4.png)
+
+# Vereisten voor TR Domein Registratie Proces
+Ga naar Instellingen -> Producten -> Selecteer uw domein product, selecteer om *.tr domein te bewerken. Wanneer u bij het tabblad Extensies komt, ziet u een waarschuwing over extra domeinvelden. Voeg deze toe.
+![img_5.png](img_5.png)
+Bewerk alle informatie behalve de variabele naam naar wens, en verwijder ook het "Verplicht" vinkje in het tabblad "Geavanceerd" (Als u dit niet doet, moeten klanten deze velden invullen tijdens domeinregistratie.)
+![img_6.png](img_6.png)

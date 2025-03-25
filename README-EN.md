@@ -40,3 +40,33 @@ Use Test Configuration to check if HostBill can connect.
 
 Click on Add New App.
 
+# Domain Import
+
+Go to Extras -> Import -> Import Services. The Domainnameapi module should appear in the list. Select it and click Continue.
+![img_1.png](img_1.png)
+Domain names will be listed. You can match customers and products and import them.
+
+![img.png](img.png)
+
+# Domain Pricing
+
+Go to Extras -> Import -> TLD Prices, Create a profile.
+Carefully fill in the rates and other settings.
+
+![img_2.png](img_2.png)
+
+# Domain Query Settings
+
+To set query settings for an extension, go to Settings -> Domain Settings tab.
+![img_3.png](img_3.png)
+When editing the extension, select Domainnameapi as the Whois engine and Compliance check. This way, your queries will be made through Domainnameapi instead of general whois servers.
+Note: For this operation, you need to rename the whois.custom.php.example file in the Hostbill Directory > includes > extend > whois to whois.custom.php.
+
+![img_4.png](img_4.png)
+
+# Prerequisites for TR Domain Registration Process
+Go to Settings -> Products -> Select your domain product, select to edit *.tr domain. When you come to the Extensions tab, you will see a warning about additional domain fields. Add it.
+![img_5.png](img_5.png)
+Edit all information except the variable name as you wish, and also remove the "Required" mark in the "Advanced" tab (If you don't do this, customers will have to fill in these fields during domain registration.)
+![img_6.png](img_6.png)
+

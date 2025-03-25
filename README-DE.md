@@ -39,3 +39,33 @@ Fahren Sie dann mit der Hinzufügung Ihrer Nameserver fort:
 Verwenden Sie die Testkonfiguration, um zu überprüfen, ob HostBill eine Verbindung herstellen kann.
 
 Klicken Sie auf Neue App hinzufügen.
+
+# Domain-Import
+
+Gehen Sie zu Extras -> Import -> Dienste importieren. Das Domainnameapi-Modul sollte in der Liste erscheinen. Wählen Sie es aus und klicken Sie auf Weiter.
+![img_1.png](img_1.png)
+Domainnamen werden aufgelistet. Sie können Kunden und Produkte zuordnen und importieren.
+
+![img.png](img.png)
+
+# Domain-Preisgestaltung
+
+Gehen Sie zu Extras -> Import -> TLD-Preise, Erstellen Sie ein Profil.
+Füllen Sie die Tarife und andere Einstellungen sorgfältig aus.
+
+![img_2.png](img_2.png)
+
+# Domain-Abfrageeinstellungen
+
+Um Abfrageeinstellungen für eine Erweiterung festzulegen, gehen Sie zum Tab Einstellungen -> Domain-Einstellungen.
+![img_3.png](img_3.png)
+Beim Bearbeiten der Erweiterung wählen Sie Domainnameapi als Whois-Engine und Konformitätsprüfung. Auf diese Weise werden Ihre Abfragen über Domainnameapi statt über allgemeine Whois-Server durchgeführt.
+Hinweis: Für diesen Vorgang müssen Sie die Datei whois.custom.php.example im Hostbill-Verzeichnis > includes > extend > whois in whois.custom.php umbenennen.
+
+![img_4.png](img_4.png)
+
+# Voraussetzungen für den TR-Domain-Registrierungsprozess
+Gehen Sie zu Einstellungen -> Produkte -> Wählen Sie Ihr Domain-Produkt, wählen Sie *.tr-Domain bearbeiten. Wenn Sie zum Tab Erweiterungen gelangen, sehen Sie eine Warnung zu zusätzlichen Domain-Feldern. Fügen Sie es hinzu.
+![img_5.png](img_5.png)
+Bearbeiten Sie alle Informationen außer dem Variablennamen nach Ihren Wünschen und entfernen Sie auch das "Erforderlich"-Kontrollkästchen im Tab "Erweitert" (Wenn Sie dies nicht tun, müssen Kunden diese Felder während der Domain-Registrierung ausfüllen.)
+![img_6.png](img_6.png)
