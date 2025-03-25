@@ -8,11 +8,16 @@
  */
 /** @noinspection PhpUndefinedClassInspection */
 
+/**
+ * Domain Name API Module for HostBill
+ * @author Bünyamin AKÇAY <bunyamin@bunyam.in>
+ */
+
 require_once __DIR__.'/lib/dna.php';
 
-class domainnameapi extends DomainModule{
+class domainnameapi extends DomainModule implements  DomainModuleContacts, DomainModuleListing, DomainLookupInterface, DomainSuggestionsInterface, DomainPremiumInterface, DomainPriceImport{
 
-    protected $version     = '1.1.6';
+    protected $version     = '1.1.7';
     protected $modname     = "Domain Name Api";
     protected $description = 'Domain Name API - ICANN Accredited Domain Registrar from TURKEY ';
 
@@ -59,7 +64,7 @@ class domainnameapi extends DomainModule{
         'Renew',
         'ContactInfo',
         'RegisterNameServers',
-        'EppCode'
+        'EppCode',
     ];
 
     protected $clientCommands = [
@@ -70,6 +75,7 @@ class domainnameapi extends DomainModule{
 
 
     /**
+     * Initialize DNA API connection
      * @return DomainNameAPI_PHPLibrary
      */
     private function dna(){
@@ -88,8 +94,7 @@ class domainnameapi extends DomainModule{
 
 
          /**
-     * Checking connection
-     * Test:1/1
+     * Test API connection
      * @return bool
      */
     public function testConnection() {
@@ -106,21 +111,8 @@ class domainnameapi extends DomainModule{
     }
 
     /**
-     * Register domain name, using
-     * $this->configuration - configuration/connection details for this registrars
-     * $this->options - domain registration options array with keys:
-     * - ns1,ns2,ns3... nameservers to use
-     * - numyears - period to register for
-     * - ext - domain extended attributes (required by some tlds)
-     *
-     * $this->domain_contacts - domain contacts array with keys:
-     *  - registrant - array with registrant details
-     *  - admin - array with admin person details
-     *  - billing - array with billing person details
-     *  - tech - array with tech person details
-     *
+     * Register a new domain
      * @return bool
-     * @test 15/15
      */
     public function Register() {
 
@@ -139,6 +131,10 @@ class domainnameapi extends DomainModule{
             }
         }
 
+        if($this->details["idprotection"] == "1"){
+            $idprotection=true;
+        }
+
         $contacts = [
             "Administrative" => $this->_makeContact($this->domain_contacts['admin']),
             "Billing"        => $this->_makeContact($this->domain_contacts['billing']),
@@ -147,7 +143,29 @@ class domainnameapi extends DomainModule{
         ];
 
 
-        $result = $this->dna()->RegisterWithContactInfo($domain,$period,$contacts,$nameservers,$idprotection,$privacy);
+        $additional = [];
+
+        if(substr($this->options["tld"], -2) == "tr" && isset($this->options["ext"]) && !empty($this->options["ext"])) {
+            $registrantInfo = $this->_makeContact($this->domain_contacts['registrant']);
+            $externalData = $this->options["ext"];
+            $additional['TRABISDOMAINCATEGORY'] = strlen($registrantInfo['Company'])>1 ? 0 : 1;
+            $additional['TRABISCOUNTRYID']      = $registrantInfo['Country'] == "TR" ? 215 : 888;
+            $additional['TRABISCOUNTRYNAME']    = $registrantInfo['Country'];
+            $additional['TRABISCITYNAME']       = $registrantInfo['City'];
+            $additional['TRABISCITIYID']        = 888;
+
+            if(strlen($registrantInfo['Company'])>1){
+                $additional['TRABISNAMESURNAME']=$registrantInfo['FirstName'].' '.$registrantInfo['LastName'];
+                $additional['TRABISCITIZIENID']=$externalData['TRABISCITIZIENID'];
+            }else{
+                $additional['TRABISORGANIZATION']=$registrantInfo['Company'];
+                $additional['TRABISTAXOFFICE']=$externalData['TRABISTAXOFFICE'];
+                $additional['TRABISTAXNUMBER']=$externalData['TRABISTAXNUMBER'];
+            }
+        }
+
+
+        $result = $this->dna()->RegisterWithContactInfo($domain,$period,$contacts,$nameservers,$idprotection,$privacy,$additional);
 
         if ($result["result"] == "OK") {
 
@@ -174,22 +192,8 @@ class domainnameapi extends DomainModule{
 
 
     /**
-     * Transfer domain name, using
-     * $this->configuration - configuration/connection details for this registrars
-     * $this->options - domain registration options array with keys:
-     * - ns1,ns2,ns3... nameservers to use
-     * - numyears - period to register for
-     * - ext - domain extended attributes (required by some tlds)
-     * - epp_code - domain EPP/transfer code
-     *
-     * $this->domain_contacts - domain contacts array with keys:
-     *  - registrant - array with registrant details
-     *  - admin - array with admin person details
-     *  - billing - array with billing person details
-     *  - tech - array with tech person details
-     *
+     * Transfer domain to another registrar
      * @return bool
-     * @test 5/5
      */
     public function Transfer() {
 
@@ -224,21 +228,8 @@ class domainnameapi extends DomainModule{
 
 
     /**
-     * Renew registered domain name, using
-     * $this->configuration - configuration/connection details for this registrars
-     * $this->options - domain registration options array with keys:
-     * - ns1,ns2,ns3... nameservers to use
-     * - numyears - period to register for
-     * - ext - domain extended attributes (required by some tlds)
-     *
-     * $this->domain_contacts - domain contacts array with keys:
-     *  - registrant - array with registrant details
-     *  - admin - array with admin person details
-     *  - billing - array with billing person details
-     *  - tech - array with tech person details
-     *
+     * Renew domain registration
      * @return bool
-     * @test 6/6
      */
     public function Renew() {
 
@@ -271,12 +262,8 @@ class domainnameapi extends DomainModule{
     }
 
     /**
-     * Return array of nameservers registered for domain stored in
-     * $this->options['sld'] - domain name (without extension/tld)
-     * $this->options['tld'] - domain extension/tld
+     * Get domain nameservers
      * @return array|bool
-     * @test 7/6
-     * @subtrimal  phonenumber_prefix
      */
     public function getNameServers() {
 
@@ -311,12 +298,8 @@ class domainnameapi extends DomainModule{
 
 
     /**
-     * Update domain nameservers:
-     * $this->options['sld'] - domain name (without extension/tld)
-     * $this->options['tld'] - domain extension/tld
-     * $this->options['ns*'] - domain nameserver to save (ns1,ns2,ns3...)
+     * Update domain nameservers
      * @return bool
-     * @test 4/4
      */
     public function updateNameServers() {
 
@@ -353,11 +336,8 @@ class domainnameapi extends DomainModule{
 
 
     /**
-     * Ger array of contact information assigned to doman name, to display in contact update form
-     * $this->options['sld'] - domain name (without extension/tld)
-     * $this->options['tld'] - domain extension/tld
+     * Get domain contact information
      * @return array|bool
-     * @test 12/12
      */
     public function getContactInfo() {
 
@@ -376,17 +356,8 @@ class domainnameapi extends DomainModule{
     }
 
     /**
-     * Update domain contact informations related to domain name
-     *
-     * $this->options['sld'] - domain name (without extension/tld)
-     * $this->options['tld'] - domain extension/tld
-     * $this->options also holds keys of submitted values:
-     *  - registrant - array with registrant details
-     *  - admin - array with admin person details
-     *  - billing - array with billing person details
-     *  - tech - array with tech person details
+     * Update domain contact information
      * @return bool
-     * @test 12/12
      */
     public function updateContactInfo() {
 
@@ -431,11 +402,8 @@ class domainnameapi extends DomainModule{
     }
 
     /**
-     * Return status of domain registrar lock protection
-     * $this->options['sld'] - domain name (without extension/tld)
-     * $this->options['tld'] - domain extension/tld
+     * Get domain registrar lock status
      * @return bool|int 1|0
-     * @test 4/4
      */
     public function getRegistrarLock() {
 
@@ -493,15 +461,8 @@ class domainnameapi extends DomainModule{
 
 
     /**
-     * Update status of domain registrar lock protection
-     *
-     * $this->options['registrarLock'] - submitted registrar lock value (1 or 0)
-     * $this->options['sld'] - domain name (without extension/tld)
-     * $this->options['tld'] - domain extension/tld
+     * Update domain registrar lock status
      * @return bool
-     * @test 7/5
-     * @todo Same registrar lock status will be check on demand
-     * @todo unsaved statuses will be throw
      */
     public function updateRegistrarLock() {
 
@@ -587,15 +548,37 @@ class domainnameapi extends DomainModule{
     }
 
 
+
     /**
-     * Register custom Name Server at registrar
-     * Note: Not all registrars offer this feature
-     * var_dump($this->options) to examine what has been submitted from user form
-     *
-     * $this->options['sld'] - domain name (without extension/tld)
-     * $this->options['tld'] - domain extension/tld
+     * Get registered nameservers
      * @return array|bool
-     * @test 5/5
+     */
+    public function getRegisterNameServers(){
+
+            $domainDetail = $this->api->getDetails($this->name);
+
+        if ($domainDetail["result"] != "OK") {
+
+            return false;
+        }
+
+
+        $childNsList = $domainDetail["data"]["ChildNameServers"] ? $domainDetail["data"]["ChildNameServers"] : [];
+
+        if ($childNsList) {
+            $result = [];
+            foreach ($childNsList as $v) {
+                $result[str_replace("." . $this->name, "", $v["ns"])] = $v["ip"];
+            }
+            return $result;
+        } else {
+            return [];
+        }
+
+    }
+    /**
+     * Register custom nameserver
+     * @return bool
      */
     public function registerNameServer() {
 
@@ -632,14 +615,8 @@ class domainnameapi extends DomainModule{
 
 
     /**
-     * Update custom Name Server IP at registrar
-     * Note: Not all registrars offer this feature
-     * var_dump($this->options) to examine what has been submitted from user form
-     *
-     * $this->options['sld'] - domain name (without extension/tld)
-     * $this->options['tld'] - domain extension/tld
-     * @return array|bool
-     * @test 4/4
+     * Modify custom nameserver IP
+     * @return bool
      */
     public function modifyNameServer() {
 
@@ -677,14 +654,8 @@ class domainnameapi extends DomainModule{
     }
 
     /**
-     * Delete Name Server from registrar
-     * Note: Not all registrars offer this feature
-     * var_dump($this->options) to examine what has been submitted from user form
-     *
-     * $this->options['sld'] - domain name (without extension/tld)
-     * $this->options['tld'] - domain extension/tld
-     * @return array|bool
-     * @test 2/2
+     * Delete custom nameserver
+     * @return bool
      */
     public function deleteNameServer() {
 
@@ -720,13 +691,8 @@ class domainnameapi extends DomainModule{
 
 
     /**
-     * Return domain EPP/Security code. This code will be sent to customer by HostBill by email.
-     *
-     * $this->options['sld'] - domain name (without extension/tld)
-     * $this->options['tld'] - domain extension/tld
-     *
-     * @return string|bool Return false if failed.
-     * @test 3/3
+     * Get domain EPP code
+     * @return string|bool
      */
     public function getEppCode() {
 
@@ -786,20 +752,8 @@ class domainnameapi extends DomainModule{
 
 
     /**
-     *
-     * Get domain details stored at registrar to synchronize those stored in HostBill db.
-     *
-     * $this->options['sld'] - domain name (without extension/tld)
-     * $this->options['tld'] - domain extension/tld
-     *
+     * Get domain details from registrar
      * @return array|bool
-     * returned array CAN contain keys:
-     *  - expires - date in Y-m-d format when domain will expire
-     *  - status - d//rar in one of hb_domains.status value (Active,Expired,Pending Registration, Pending Transfer)
-     *  - reglock - status of domain registrar lock
-     *  - ns - array of nameservers for this domain name
-     *  - idprotection - status of idprotection feature for this domain
-     * @test 3/3
      */
     public function synchInfo() {
 
@@ -828,8 +782,195 @@ class domainnameapi extends DomainModule{
     }
 
     /**
-     * This is private parsing function. No handler on hostbill
-     * @param $cdata
+     * Check domain availability
+     * @param string $sld
+     * @param string $tld
+     * @param array $settings
+     * @return array
+     */
+    public function lookupDomain($sld, $tld, $settings = [])
+    {
+        $result = $this->dna()->CheckAvailability([$sld], [ltrim($tld,'.')], 1, "create");
+        $response = ["available" => false];
+
+        if (isset($result[0])) {
+            $domain = $result[0];
+            if (isset($domain['TLD'])) {
+                if ($domain['Status'] == 'available') {
+                    $response['available'] = true;
+                } else {
+                    $response['available'] = false;
+                }
+
+                if (isset($domain["IsFee"]) && $domain["IsFee"] == 1) {
+                    $response['premium'] = [
+                        'register' => number_format($domain["Price"], 2, '.', ''),
+                        'currency' => $domain["Currency"]
+                    ];
+                    $response['available'] = true;
+                }
+            }
+        }
+
+
+        return $response;
+    }
+    /**
+     * Get domain suggestions
+     * @param string $sld
+     * @param string $tld
+     * @param array $settings
+     * @return array
+     */
+    public function suggestDomains($sld, $tld, $settings = [])
+    {
+        $tlds=[];
+        if(!empty($settings["tlds"])) {
+            foreach ($settings["tlds"] as $k => $v) {
+              $tlds[]=ltrim($v,'.');
+            }
+        }
+
+        $result = $this->dna()->CheckAvailability([$sld], $tlds, 1, "create");
+        $returned_domains = [];
+        foreach ($result as $k => $domain) {
+            if (isset($domain['TLD'])) {
+                if ($domain['Status'] == 'available' && $domain['IsFee'] !== true) {
+                    $returned_domains[] = $domain['DomainName'].'.'.$domain['TLD'];
+                }
+            }
+        }
+
+        file_put_contents(__DIR__.'/log.'.$sld.'.json', json_encode(['j'=>$tlds,'s'=>$result], JSON_PRETTY_PRINT));
+
+        return $returned_domains;
+    }
+
+    /**
+     * Get extended domain attributes
+     * @return array
+     */
+    public function getExtendedAttributes()
+    {
+        if(!isset($this->name) || $this->name == "") {
+            $this->name = $this->options["sld"] . "." . $this->options["tld"];
+        }
+        $attributes = [];
+
+        if(substr($this->options["tld"], -2) == "tr") {
+            $extension = "tr";
+
+            $attributes[] = [
+                "description" => "Citizen ID (Blank if Company)",
+                "name"        => "TRABISCITIZIENID",
+                "type"        => "input",
+                "option"      => false
+            ];
+
+            $attributes[] = [
+                "description" => "Company Tax Office (Blank if personal)",
+                "name"        => "TRABISTAXOFFICE",
+                "type"        => "input",
+                "option"      => false
+            ];
+            $attributes[] = [
+                "description" => "Company Tax Number (Blank if personal)",
+                "name"        => "TRABISTAXNUMBER",
+                "type"        => "input",
+                "option"      => false
+            ];
+
+        }
+
+        if(!empty($attributes)) {
+            foreach ($attributes as &$attr) {
+                if(isset($this->options["ext"][$attr["name"]])) {
+                    $attr["default"] = $this->options["ext"][$attr["name"]];
+                }
+            }
+            return [$extension => $attributes];
+        }
+    }
+
+    /**
+     * List all domains
+     * @return array
+     */
+    public function ListDomains()
+    {
+
+        $listParams = [
+            'PageNumber' => 0,
+            'PageSize'   => 1000,
+            'OrderColumn'=>'Id',
+            'OrderDirection'=>'DESC',
+        ];
+
+
+        $response =  $this->dna()->GetList($listParams);
+
+        $result    = [];
+        $user_data = [];
+
+        if (isset($response["data"]["Domains"]) && $response["data"]["Domains"]) {
+            $result['total'] = $response["TotalCount"];
+
+            foreach ($response["data"]["Domains"] as $res) {
+                $domain = $res["DomainName"] ?? '';
+                if ($domain) {
+                    if ($res["Status"] == "Active") {
+                        $result[] =['name'=> $domain];
+                    }
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Get domain pricing
+     * @return array
+     */
+    public function getDomainPrices()
+    {
+
+        $response = $this->dna()->GetTldList(999);
+
+        if ($response["result"] != "OK" && isset($response["error"]["Details"]) && strlen($response["error"]["Details"]) >= 3) {
+            return  $response["error"]["Message"] . " : " . $response["error"]["Details"];
+
+        }
+
+        $result = [];
+
+        foreach ($response["data"] as $row) {
+            if ($row["status"] != "Active") {
+                continue;
+            }
+
+            if (!isset($row["pricing"]["registration"][1])) {
+                continue;
+            }
+
+            foreach (range($row['minperiod'], $row['maxperiod']) as $period) {
+
+                $result['USD'][$row["tld"]][$period] = [
+                    'period'   => $period,
+                    'register' => number_format($row["pricing"]["registration"][1]*$period, 2, '.', ''),
+                    'transfer' => number_format($row["pricing"]["transfer"][1]*$period, 2, '.', ''),
+                    'renew'  => number_format($row["pricing"]["renew"][1]*$period, 2, '.', ''),
+                    'redemption' => number_format($row["pricing"]["restore"][1]*$period, 2, '.', ''),
+                ];
+
+            }
+        }
+        return $result;
+    }
+
+
+    /**
+     * Format contact data for API
+     * @param array $cdata
      * @return array
      */
     private function _makeContact($cdata) {
@@ -859,9 +1000,9 @@ class domainnameapi extends DomainModule{
 
 
     /**
-     * This is private parsing function. No handler on hostbill
-     * @param $type
-     * @param $data
+     * Parse contact data from API response
+     * @param string $type
+     * @param array $data
      * @return array
      */
     private function _parseContact($type,$data){

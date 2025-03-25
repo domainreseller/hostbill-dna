@@ -39,3 +39,33 @@ Daha sonra nameserver'larınızı əlavə etməyə keçin:
 HostBill'in bağlana bilməsini yoxlamaq üçün Test Konfiqurasiyasını istifadə edin.
 
 Yeni Tətbiq Əlavə Et'e vurun.
+
+# Domen İmportu
+
+Əlavələr -> İçəri aktar -> Xidmətləri içəri aktar seçin. Domainnameapi modulu siyahıda görünməlidir. Seçin və Davam et düyməsinə basın.
+![img_1.png](img_1.png)
+Domen adları siyahılanacaq. Müştəri və məhsulları uyğunlaşdırıb içəri aktara bilərsiniz.
+
+![img.png](img.png)
+
+# Domen Qiymətləndirməsi
+
+Əlavələr -> İçəri aktar -> TLD qiymətlərini seçin, Bir profil yaradın.
+Diqqətlə dərəcələri və digər parametrləri doldurun.
+
+![img_2.png](img_2.png)
+
+# Domen Sorğu Parametrləri
+
+Bir uzantı üçün sorğu parametrlərini təyin etmək üçün, Parametrlər -> Domen Parametrləri sekmesinə gedin.
+![img_3.png](img_3.png)
+Uzantını düzəltdiyinizdə Whois mühərriki və Uyğunluq yoxlamasını Domainnameapi olaraq seçin. Bu şəkildə sorğularınız ümumi whois serverlərindən deyil, Domainnameapi vasitəsilə aparılacaq.
+Qeyd: bu əməliyyat üçün Hostbill Dizini > includes > extend > whois içindəki whois.custom.php.example faylının adını whois.custom.php olaraq dəyişdirməlisiniz.
+
+![img_4.png](img_4.png)
+
+# TR Domen Qeydiyyat Prosesi üçün Ön Məlumatlar
+Parametrlər -> Məhsullar -> Domen məhsulunuzu seçin, *.tr domenini düzəltməyi seçin. Əlavələr sekmesinə gəldiyinizdə əlavə domen sahələri xəbərdarlığını göreceksiniz. Əlavə edin.
+![img_5.png](img_5.png)
+Dəyişən adı xaricindəki bütün məlumatları istəyinizə görə düzəldin, həmçinin "Təkmilləşdirilmiş" sekmesindəki "Tələb olunur" işarəsini silin (Bunu etməsəniz, müştəri domen qeydiyyatı zamanı bu sahələri doldurmalı olacaq.)
+![img_6.png](img_6.png)

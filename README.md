@@ -39,3 +39,35 @@ Daha sonra nameserver'larınızı eklemeye geçin:
 HostBill'in bağlanıp bağlanamadığını kontrol etmek için Test Konfigürasyonu'nu kullanın.
 
 Yeni Uygulama Ekle'ye tıklayın.
+
+# Alan adı içe aktarımı
+
+Ekstralar -> İçeri aktar -> Servisleri içeri aktarı seçin. Domainnameapi modülü listede görünmelidir. Seçin ve Devam et butonuna basın.
+![img_1.png](img_1.png)
+Alan adları listelenecektir.  Müşteri ve ürün eşleştirip içe aktarım yapabilirsiniz
+
+![img.png](img.png)
+
+
+# Alan adları fiyatlandırması
+
+Ekstralar -> İçeri aktar ->TLD fiyatlarını seçin, Bir profil oluşturun. 
+Dikkatlice oranları ve diğer ayarları doldurun.
+
+![img_2.png](img_2.png)
+
+
+# Alan adı sorgulama ayarları
+
+Bir uzantıya ait sorgulama ayarlarını yapmak için, Ayarlar->Alan adı ayarları sekmesine gidin gidin.
+![img_3.png](img_3.png)
+Uzantıyı düzelediğinizde Whois motoru ve Uygunluk kontrolünü Domainnameapi olarak seçin. Böylece sorgulamalarınız genel whois sunucularından değil, Domainnameapi üzerinden yapılacaktır.
+Not: bu işlem için Hostbill Dizini > includes > extend > whois içindeki whois.custom.php.example dosyasının ismini whois.custom.php olarak değiştirmelisiniz.
+
+![img_4.png](img_4.png)
+
+# TR Alan adı kayıt işlemi için ön bilgiler
+Ayarlar -> Ürünler-> Alan adı ürününüzü seçin, *.tr alan adını düzenlemeyş seçin. Eklentiler sekmesine geldiğinizde ek alan adı alanları uyarısı olduğunu göreceksiniz. Ekleyin.
+![img_5.png](img_5.png)
+Değişken adı haricindeki tüm bilgileri isteğinize göre düzenleyin, ayrıca "Gelişmiş" sekmesinde ki "Gerekli" işaretini kaldırın (Bunu yapmazsanız, müşteri alan adı kayıt işlemi sırasında bu alanları doldurmak zorunda kalacaktır.)
+![img_6.png](img_6.png)
