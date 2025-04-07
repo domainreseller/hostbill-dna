@@ -17,7 +17,7 @@ require_once __DIR__.'/lib/dna.php';
 
 class domainnameapi extends DomainModule implements  DomainModuleContacts, DomainModuleListing, DomainLookupInterface, DomainSuggestionsInterface, DomainPremiumInterface, DomainPriceImport{
 
-    protected $version     = '1.1.7';
+    protected $version     = '1.1.8';
     protected $modname     = "Domain Name Api";
     protected $description = 'Domain Name API - ICANN Accredited Domain Registrar from TURKEY ';
 
@@ -148,17 +148,17 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
         if(substr($this->options["tld"], -2) == "tr" && isset($this->options["ext"]) && !empty($this->options["ext"])) {
             $registrantInfo = $this->_makeContact($this->domain_contacts['registrant']);
             $externalData = $this->options["ext"];
-            $additional['TRABISDOMAINCATEGORY'] = strlen($registrantInfo['Company'])>1 ? 0 : 1;
+            $additional['TRABISDOMAINCATEGORY'] = $externalData['TRABISDOMAINCATEGORY'];
             $additional['TRABISCOUNTRYID']      = $registrantInfo['Country'] == "TR" ? 215 : 888;
             $additional['TRABISCOUNTRYNAME']    = $registrantInfo['Country'];
             $additional['TRABISCITYNAME']       = $registrantInfo['City'];
             $additional['TRABISCITIYID']        = 888;
 
             if(strlen($registrantInfo['Company'])>1){
-                $additional['TRABISNAMESURNAME']=$registrantInfo['FirstName'].' '.$registrantInfo['LastName'];
+                $additional['TRABISNAMESURNAME']=$externalData['TRABISNAMESURNAME'];
                 $additional['TRABISCITIZIENID']=$externalData['TRABISCITIZIENID'];
             }else{
-                $additional['TRABISORGANIZATION']=$registrantInfo['Company'];
+                $additional['TRABISORGANIZATION']=$externalData['TRABISORGANIZATION'];
                 $additional['TRABISTAXOFFICE']=$externalData['TRABISTAXOFFICE'];
                 $additional['TRABISTAXNUMBER']=$externalData['TRABISTAXNUMBER'];
             }
@@ -860,9 +860,32 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
         if(substr($this->options["tld"], -2) == "tr") {
             $extension = "tr";
 
+            $attributes[]= [
+                "description" => "Domain Category",
+                "name"        => "TRABISDOMAINCATEGORY",
+                "type"        => "select",
+                "option"      => [
+                    0 => 'Company',
+                    1 => 'Personal'
+                ]
+            ];
+
             $attributes[] = [
                 "description" => "Citizen ID (Blank if Company)",
                 "name"        => "TRABISCITIZIENID",
+                "type"        => "input",
+                "option"      => false
+            ];
+            $attributes[] = [
+                "description" => "Personal name and surname (Blank if Company)",
+                "name"        => "TRABISNAMESURNAME",
+                "type"        => "input",
+                "option"      => false
+            ];
+
+            $attributes[] = [
+                "description" => "Company Name (Blank if personal)",
+                "name"        => "TRABISORGANIZATION",
                 "type"        => "input",
                 "option"      => false
             ];
