@@ -17,9 +17,9 @@ require_once __DIR__.'/lib/dna.php';
 
 class domainnameapi extends DomainModule implements  DomainModuleContacts, DomainModuleListing, DomainLookupInterface, DomainSuggestionsInterface, DomainPremiumInterface, DomainPriceImport{
 
-    protected $version     = '1.1.8';
+    protected $version     = '1.1.9';
     protected $modname     = "Domain Name Api";
-    protected $description = 'Domain Name API - ICANN Accredited Domain Registrar from TURKEY ';
+    protected $description = 'ICANN Accredited Domain Registrar With 900+ TLDs';
 
     /**
      * @var null DomainNameAPI_PHPLibrary
@@ -97,16 +97,22 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
      * Test API connection
      * @return bool
      */
-    public function testConnection() {
+    public function testConnection()
+    {
+        $check = $this->dna()->GetResellerDetails();
 
-        $result = $this->dna()->GetCurrentBalance();
-
-
-
-        if($result["ErrorCode"] == 0){
-            return true;
-        }else{
+        if ($check["result"] != "OK") {
+            $this->addError($check["error"]['Details']);
             return false;
+        } else {
+            $balance_texts = [];
+            foreach ($check['balances'] as $k => $v) {
+                if ($v["balance"] > 0) {
+                    $balance_texts[] = $v["balance"] . " " . $v["currency"];
+                }
+            }
+            $this->addInfo('#' . $check['id'] . ' ' . $check['name'] . ' (' . implode(", ", $balance_texts) . ')');
+            return true;
         }
     }
 
