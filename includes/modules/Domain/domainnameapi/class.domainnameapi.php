@@ -17,7 +17,7 @@ require_once __DIR__.'/lib/dna.php';
 
 class domainnameapi extends DomainModule implements  DomainModuleContacts, DomainModuleListing, DomainLookupInterface, DomainSuggestionsInterface, DomainPremiumInterface, DomainPriceImport{
 
-    protected $version     = '1.1.9';
+    protected $version     = '1.1.10';
     protected $modname     = "Domain Name Api";
     protected $description = 'ICANN Accredited Domain Registrar With 900+ TLDs';
 
@@ -985,9 +985,9 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
 
                 $result['USD'][$row["tld"]][$period] = [
                     'period'   => $period,
-                    'register' => number_format($row["pricing"]["registration"][1]*$period, 2, '.', ''),
+                    'register' => number_format($row["pricing"]["registration"][$period], 2, '.', ''),
                     'transfer' => number_format($row["pricing"]["transfer"][1]*$period, 2, '.', ''),
-                    'renew'  => number_format($row["pricing"]["renew"][1]*$period, 2, '.', ''),
+                    'renew'  => number_format($row["pricing"]["renew"][$period], 2, '.', ''),
                     'redemption' => number_format($row["pricing"]["restore"][1]*$period, 2, '.', ''),
                 ];
 
