@@ -17,7 +17,7 @@ require_once __DIR__.'/lib/dna.php';
 
 class domainnameapi extends DomainModule implements  DomainModuleContacts, DomainModuleListing, DomainLookupInterface, DomainSuggestionsInterface, DomainPremiumInterface, DomainPriceImport{
 
-    protected $version     = '1.1.10';
+    protected $version     = '1.1.11';
     protected $modname     = "Domain Name Api";
     protected $description = 'ICANN Accredited Domain Registrar With 900+ TLDs';
 
@@ -86,7 +86,7 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
         }
 
         if($this->dna==null){
-            $this->dna = new \DomainNameApi\DomainNameAPI_PHPLibrary($this->configuration['username']['value'],$this->configuration['password']['value']);
+            $this->dna = new \DomainNameApi\DomainNameAPI_PHPLibrary($this->configuration['username']['value'],$this->configuration['password']['value'],$testmode);
         }
 
         return $this->dna;
