@@ -17,7 +17,7 @@ require_once __DIR__.'/lib/dna.php';
 
 class domainnameapi extends DomainModule implements  DomainModuleContacts, DomainModuleListing, DomainLookupInterface, DomainSuggestionsInterface, DomainPremiumInterface, DomainPriceImport{
 
-    protected $version     = '1.1.11';
+    protected $version     = '1.1.12';
     protected $modname     = "Domain Name Api";
     protected $description = 'ICANN Accredited Domain Registrar With 900+ TLDs';
 
