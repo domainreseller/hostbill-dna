@@ -15,9 +15,9 @@
 
 require_once __DIR__.'/lib/dna.php';
 
-class domainnameapi extends DomainModule implements  DomainModuleContacts, DomainModuleListing, DomainLookupInterface, DomainSuggestionsInterface, DomainPremiumInterface, DomainPriceImport{
+class domainnameapi extends DomainModule implements  DomainModuleContacts, DomainModuleListing, DomainLookupInterface, DomainSuggestionsInterface, DomainPremiumInterface, DomainPriceImport, DomainModuleLock, DomainModuleNameservers, DomainModuleGluerecords, DomainModuleAuth{
 
-    protected $version     = '1.1.15';
+    protected $version     = '1.1.16';
     protected $modname     = "Domain Name Api";
     protected $description = 'ICANN Accredited Domain Registrar With 900+ TLDs';
 
@@ -161,12 +161,12 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
             $additional['TRABISCITIYID']        = 888;
 
             if(strlen($registrantInfo['Company'])>1){
-                $additional['TRABISNAMESURNAME']=$externalData['TRABISNAMESURNAME'];
-                $additional['TRABISCITIZIENID']=$externalData['TRABISCITIZIENID'];
-            }else{
                 $additional['TRABISORGANIZATION']=$externalData['TRABISORGANIZATION'];
                 $additional['TRABISTAXOFFICE']=$externalData['TRABISTAXOFFICE'];
                 $additional['TRABISTAXNUMBER']=$externalData['TRABISTAXNUMBER'];
+            }else{
+                $additional['TRABISNAMESURNAME']=$externalData['TRABISNAMESURNAME'];
+                $additional['TRABISCITIZIENID']=$externalData['TRABISCITIZIENID'];
             }
         }
 
@@ -192,6 +192,8 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
                 'change' => false,
                 'error'  => $error
             ));
+
+            return false;
         }
 
     }
@@ -207,7 +209,7 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
         $epp    = $this->options['epp_code'];
         $year   = $this->options['numyears'];
 
-         $result = $this->dna()->Transfer($domain,$epp);
+         $result = $this->dna()->Transfer($domain,$epp,$year);
 
         if ($result["result"] == "OK") {
 
@@ -227,6 +229,8 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
                 'change' => false,
                 'error'  => $error
             ));
+
+            return false;
         }
 
 
@@ -250,8 +254,6 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
             $this->addPeriod();
             $this->addInfo('Renew: succeed');
             return true;
-
-            return true;
         } else {
 
             $error = $result["error"]["Message"] . " - " . $result["error"]["Details"];
@@ -264,6 +266,8 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
                 'change' => false,
                 'error'  => $error
             ));
+
+            return false;
         }
     }
 
@@ -287,7 +291,7 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
             } else {
                 // Only one nameserver
                 if (isset($result["data"]["NameServers"])) {
-                    $values[1] = $result["data"]["NameServers"];
+                    $values[0] = $result["data"]["NameServers"];
                 }
             }
             return $values;
@@ -311,7 +315,7 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
 
         $nsList = array();
         foreach (range(1, 5) as $k => $v) {
-            if (strlen(trim($this->options["ns1"])) > 0) {
+            if (strlen(trim($this->options["ns{$v}"])) > 0) {
                 $nsList[] = $this->options["ns{$v}"];
             }
         }
@@ -349,6 +353,10 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
 
         $result =$this->dna()->GetContacts($this->options['sld'].'.'.$this->options['tld']);
 
+        if ($result["result"] != "OK") {
+            $this->addError($result["error"]["Message"] . " - " . $result["error"]["Details"]);
+            return false;
+        }
 
         $contact = [
             'registrant' => $this->_parseContact('Registrant', $result["data"]["contacts"]),
@@ -561,7 +569,7 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
      */
     public function getRegisterNameServers(){
 
-            $domainDetail = $this->api->getDetails($this->name);
+            $domainDetail = $this->dna()->GetDetails($this->options['sld'] . '.' . $this->options['tld']);
 
         if ($domainDetail["result"] != "OK") {
 
@@ -765,11 +773,16 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
 
         $result = $this->dna()->GetDetails($this->options['sld'] . '.' . $this->options['tld']);
 
+        if ($result["result"] != "OK") {
+            $this->addError($result["error"]["Message"] . " - " . $result["error"]["Details"]);
+            return false;
+        }
+
         $resp = [
             'status'       => 'Active',
             'expires'      => date('Y-m-d', strtotime($result['data']['Dates']['Expiration'])),
             'reglock'      => $result['data']['LockStatus'] == 'true',
-            'ns'           => $result['date']['NameServers'][0],
+            'ns'           => isset($result['data']['NameServers'][0]) ? $result['data']['NameServers'][0] : '',
             'idprotection' => $result['data']['PrivacyProtectionStatus'] == true
         ];
 
@@ -847,8 +860,6 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
             }
         }
 
-        file_put_contents(__DIR__.'/log.'.$sld.'.json', json_encode(['j'=>$tlds,'s'=>$result], JSON_PRETTY_PRINT));
-
         return $returned_domains;
     }
 
@@ -871,8 +882,9 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
                 "name"        => "TRABISDOMAINCATEGORY",
                 "type"        => "select",
                 "option"      => [
-                    0 => 'Company',
-                    1 => 'Personal'
+                    ["title" => "Company", "value" => "Company"],
+                    ["title" => "Personal", "value" => "Personal"]
+
                 ]
             ];
 
@@ -919,6 +931,8 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
             }
             return [$extension => $attributes];
         }
+
+        return [];
     }
 
     /**
@@ -1017,7 +1031,7 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
             "Fax"              => mb_convert_encoding('', "UTF-8", "auto"),
             "FaxCountryCode"   => mb_convert_encoding('', "UTF-8", "auto"),
             "Phone"            => mb_convert_encoding($cdata['phonenumber'], "UTF-8", "auto"),
-            "PhoneCountryCode" => mb_convert_encoding('90', "UTF-8", "auto"),
+            "PhoneCountryCode" => mb_convert_encoding(isset($cdata['phonecc']) ? $cdata['phonecc'] : '90', "UTF-8", "auto"),
             "Type"             => mb_convert_encoding("Contact", "UTF-8", "auto"),
             "ZipCode"          => mb_convert_encoding($cdata['postcode'], "UTF-8", "auto"),
             "State"            => mb_convert_encoding($cdata['state'], "UTF-8", "auto")
