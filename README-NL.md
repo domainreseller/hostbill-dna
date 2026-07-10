@@ -12,6 +12,12 @@
 
 **DomainNameApi** is een toonaangevende domeinnaam registrar die domeinnaam registratie en andere online diensten levert aan kleine en thuisgebaseerde bedrijven, individuen, verkeersaggregatoren en wederverkopers. HostBill stelt u in staat om de **DomainNameApi** domeinprovisioning en -beheer te automatiseren.
 
+## 📦 Downloaden — gebruik altijd de Releases!
+
+⬇️ **Download hier de nieuwste geteste versie: https://github.com/domainreseller/hostbill-dna/releases/latest**
+
+> ⚠️ Gebruik **niet** de groene knop **Code → Download ZIP** — die downloadt de ruwe ontwikkelbranch. Release-pakketten zijn geversioneerd, getest en klaar voor productie.
+
 ## Het activeren van de module
 Eerst moet u bestanden uploaden naar uw HostBill directory:
 
@@ -37,6 +43,20 @@ Ga vervolgens verder met het toevoegen van uw nameservers:
 Gebruik de Test Configuratie om te controleren of HostBill kan verbinden.
 
 Klik op Nieuwe App toevoegen.
+
+## 🔑 API-gegevens — Gebruikersnaam/Wachtwoord of Reseller ID/API Key?
+
+Beide worden ondersteund — voer ze in dezelfde twee modulevelden in; de module detecteert automatisch welke API wordt gebruikt:
+
+| U heeft | Veld "Gebruikersnaam" | Veld "Wachtwoord" | Gebruikte API |
+|---|---|---|---|
+| **Nieuwe panelgegevens** (aanbevolen) | Reseller ID — UUID zoals `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` | API Key | REST |
+| **Oude (legacy) gegevens** | API-gebruikersnaam | API-wachtwoord | SOAP |
+
+> 💡 U vindt uw **Reseller ID** en **API Key** in uw DomainNameAPI-paneel onder **API-instellingen**.
+> ⚠️ Dit zijn **API-gegevens** — het e-mailadres en wachtwoord waarmee u op het paneel inlogt, werken hier **niet**.
+
+Er is geen extra configuratie nodig — als het gebruikersnaamveld een UUID bevat, gebruikt de module de moderne REST API, anders klassiek SOAP.
 
 # Domein Import
 

@@ -14,6 +14,12 @@
 
 **DomainNameApi** est un registraire de noms de domaine de premier plan qui fournit l'enregistrement de noms de domaine et d'autres services en ligne pour les petites entreprises, les entreprises à domicile, les individus, les agrégateurs de trafic et les revendeurs. HostBill vous permet d'automatiser la fourniture et la gestion de domaine **DomainNameApi**.
 
+## 📦 Téléchargement — utilisez toujours les Releases !
+
+⬇️ **Téléchargez la dernière version testée ici : https://github.com/domainreseller/hostbill-dna/releases/latest**
+
+> ⚠️ N'utilisez **pas** le bouton vert **Code → Download ZIP** — il télécharge la branche de développement brute. Les paquets de release sont versionnés, testés et prêts pour la production.
+
 ## Activation du module
 Tout d'abord, vous devez télécharger les fichiers dans votre répertoire HostBill:
 
@@ -39,6 +45,20 @@ Puis procédez à l'ajout de vos serveurs de noms:
 Utilisez la configuration de test pour vérifier si HostBill peut se connecter.
 
 Cliquez sur Ajouter une nouvelle application.
+
+## 🔑 Identifiants API — Nom d'utilisateur/Mot de passe ou Reseller ID/API Key ?
+
+Les deux sont pris en charge — saisissez-les dans les deux mêmes champs du module ; le module détecte automatiquement quelle API utiliser :
+
+| Vous disposez de | Champ « Nom d'utilisateur » | Champ « Mot de passe » | API utilisée |
+|---|---|---|---|
+| **Nouveaux identifiants du panneau** (recommandé) | Reseller ID — UUID de la forme `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` | API Key | REST |
+| **Identifiants hérités (legacy)** | Nom d'utilisateur API | Mot de passe API | SOAP |
+
+> 💡 Vous trouverez votre **Reseller ID** et votre **API Key** dans votre panneau DomainNameAPI, section **Paramètres API**.
+> ⚠️ Ce sont des **identifiants API** — l'e-mail et le mot de passe de connexion à votre panneau ne fonctionneront **pas** ici.
+
+Aucune configuration supplémentaire n'est nécessaire — si le champ nom d'utilisateur contient un UUID, le module utilise l'API REST moderne, sinon le SOAP classique.
 
 # Importation de domaines
 

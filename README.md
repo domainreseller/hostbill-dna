@@ -14,6 +14,12 @@
 
 **DomainNameApi**, küçük ve ev tabanlı işletmelere, bireylere, trafik toplayıcılara ve yeniden satıcılara alan adı kaydı ve diğer çevrimiçi hizmetler sağlayan önde gelen bir alan adı kayıt firmasıdır. HostBill, **DomainNameApi** alan adı oluşturma ve yönetimini otomatikleştirmenizi sağlar.
 
+## 📦 İndirme — her zaman Releases kullanın!
+
+⬇️ **En güncel ve test edilmiş sürümü buradan indirin: https://github.com/domainreseller/hostbill-dna/releases/latest**
+
+> ⚠️ Yeşil **Code → Download ZIP** düğmesini **kullanmayın** — bu düğme ham geliştirme dalını indirir. Release paketleri sürümlenmiş, test edilmiş ve canlı kullanıma hazırdır.
+
 ## Modülün Aktifleştirilmesi
 Öncelikle dosyaları HostBill dizinine yüklemeniz gerekmektedir:
 
@@ -39,6 +45,20 @@ Daha sonra nameserver'larınızı eklemeye geçin:
 HostBill'in bağlanıp bağlanamadığını kontrol etmek için Test Konfigürasyonu'nu kullanın.
 
 Yeni Uygulama Ekle'ye tıklayın.
+
+## 🔑 API Bilgileri — Kullanıcı Adı/Şifre mi, Reseller ID/API Key mi?
+
+Her ikisi de desteklenir — bilgileri modüldeki aynı iki alana girin; modül hangi API'nin kullanılacağını otomatik olarak algılar:
+
+| Elinizdeki bilgi | "Kullanıcı Adı" alanı | "Parola" alanı | Kullanılan API |
+|---|---|---|---|
+| **Yeni panel bilgileri** (önerilen) | Reseller ID — `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` formatında UUID | API Key | REST |
+| **Eski (legacy) bilgiler** | API kullanıcı adı | API şifresi | SOAP |
+
+> 💡 **Reseller ID** ve **API Key** bilgilerinizi DomainNameAPI panelinizde **API Ayarları** bölümünde bulabilirsiniz.
+> ⚠️ Bunlar **API bilgileridir** — panele giriş yaptığınız e-posta/şifre burada **ÇALIŞMAZ**; API Ayarları bölümündeki Reseller ID (UUID) ve API Key kullanılmalıdır.
+
+Ekstra bir yapılandırma gerekmez — kullanıcı adı alanında bir UUID varsa modül modern REST API'yi, aksi halde klasik SOAP'ı kullanır.
 
 # Alan adı içe aktarımı
 

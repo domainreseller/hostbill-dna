@@ -13,6 +13,12 @@
 
 **DomainNameApi** 是一家领先的域名注册商，为小型和家庭型企业、个人、流量聚合器和分销商提供域名注册和其他在线服务。HostBill允许您自动化**DomainNameApi**域名供应和管理。
 
+## 📦 下载 — 请务必使用 Releases！
+
+⬇️ **在此获取最新的经过测试的版本：https://github.com/domainreseller/hostbill-dna/releases/latest**
+
+> ⚠️ 请**不要**使用绿色的 **Code → Download ZIP** 按钮 — 它下载的是未经处理的开发分支。Release 安装包经过版本管理和测试，可直接用于生产环境。
+
 ## 激活模块
 首先，您需要将文件上传到您的HostBill目录：
 
@@ -38,6 +44,20 @@
 使用测试配置检查HostBill是否可以连接。
 
 点击添加新应用程序。
+
+## 🔑 API 凭据 — 用户名/密码还是 Reseller ID/API Key？
+
+两者均受支持 — 将凭据填入模块的同两个字段即可；模块会自动检测应使用哪种 API：
+
+| 您拥有的凭据 | "用户名"字段 | "密码"字段 | 使用的 API |
+|---|---|---|---|
+| **新版面板凭据**（推荐） | Reseller ID — 形如 `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` 的 UUID | API Key | REST |
+| **旧版（legacy）凭据** | API 用户名 | API 密码 | SOAP |
+
+> 💡 您可以在 DomainNameAPI 面板的 **API 设置** 中找到您的 **Reseller ID** 和 **API Key**。
+> ⚠️ 这些是 **API 凭据** — 您登录面板所用的邮箱和密码在此**无法使用**。
+
+无需任何额外配置 — 如果用户名字段填写的是 UUID，模块将使用现代 REST API，否则使用经典 SOAP。
 
 # 域名导入
 

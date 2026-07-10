@@ -14,6 +14,12 @@
 
 **DomainNameApi** ist ein führender Domain-Name-Registrar, der Domain-Name-Registrierung und andere Online-Dienste für kleine und Heimbasierte Unternehmen, Einzelpersonen, Traffic-Aggregatoren und Wiederverkäufer bietet. HostBill ermöglicht Ihnen die Automatisierung der **DomainNameApi** Domain-Bereitstellung und Verwaltung.
 
+## 📦 Download — immer die Releases verwenden!
+
+⬇️ **Die neueste getestete Version finden Sie hier: https://github.com/domainreseller/hostbill-dna/releases/latest**
+
+> ⚠️ Verwenden Sie **nicht** den grünen Button **Code → Download ZIP** — dieser lädt den rohen Entwicklungszweig herunter. Release-Pakete sind versioniert, getestet und produktionsbereit.
+
 ## Modulaktivierung
 Zuerst müssen Sie Dateien in Ihr HostBill Verzeichnis hochladen:
 
@@ -39,6 +45,20 @@ Fahren Sie dann mit der Hinzufügung Ihrer Nameserver fort:
 Verwenden Sie die Testkonfiguration, um zu überprüfen, ob HostBill eine Verbindung herstellen kann.
 
 Klicken Sie auf Neue App hinzufügen.
+
+## 🔑 API-Zugangsdaten — Benutzername/Passwort oder Reseller ID/API Key?
+
+Beides wird unterstützt — tragen Sie die Daten in dieselben zwei Modulfelder ein; das Modul erkennt automatisch, welche API verwendet wird:
+
+| Sie haben | Feld "Benutzername" | Feld "Passwort" | Verwendete API |
+|---|---|---|---|
+| **Neue Panel-Zugangsdaten** (empfohlen) | Reseller ID — UUID wie `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` | API Key | REST |
+| **Alte (Legacy-)Zugangsdaten** | API-Benutzername | API-Passwort | SOAP |
+
+> 💡 Ihre **Reseller ID** und Ihren **API Key** finden Sie in Ihrem DomainNameAPI-Panel unter **API-Einstellungen**.
+> ⚠️ Dies sind **API-Zugangsdaten** — Ihre Panel-Login-E-Mail und das zugehörige Passwort funktionieren hier **nicht**.
+
+Es ist keine zusätzliche Konfiguration erforderlich — enthält das Benutzernamen-Feld eine UUID, verwendet das Modul die moderne REST-API, andernfalls klassisches SOAP.
 
 # Domain-Import
 
