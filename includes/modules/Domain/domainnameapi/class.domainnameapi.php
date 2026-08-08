@@ -154,20 +154,69 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
         if(substr($this->options["tld"], -2) == "tr" && isset($this->options["ext"]) && !empty($this->options["ext"])) {
             $registrantInfo = $this->_makeContact($this->domain_contacts['registrant']);
             $externalData = $this->options["ext"];
-            $additional['TRABISDOMAINCATEGORY'] = $externalData['TRABISDOMAINCATEGORY'];
+
+            // BUG-10481: the branch below used to key off the registrant's
+            // company name instead of the category the customer picked. A
+            // "Company" order placed by a client whose profile has no company
+            // name took the personal branch, so TRABISTAXOFFICE/TAXNUMBER were
+            // never sent and TRABIS rejected the registration with
+            // "Please use a valid TRABISTAXOFFICE value". The dropdown is the
+            // authoritative choice; the company name is only the fallback when
+            // the field is absent (older orders).
+            $category = isset($externalData['TRABISDOMAINCATEGORY']) ? trim($externalData['TRABISDOMAINCATEGORY']) : '';
+            if($category === ''){
+                $category = strlen($registrantInfo['Company']) > 1 ? 'Company' : 'Personal';
+            }
+            $isCompany = strtolower($category) != 'personal';
+
+            $additional['TRABISDOMAINCATEGORY'] = $category;
             $additional['TRABISCOUNTRYID']      = $registrantInfo['Country'] == "TR" ? 215 : 888;
             $additional['TRABISCOUNTRYNAME']    = $registrantInfo['Country'];
             $additional['TRABISCITYNAME']       = $registrantInfo['City'];
             $additional['TRABISCITIYID']        = 888;
 
-            if(strlen($registrantInfo['Company'])>1){
-                $additional['TRABISORGANIZATION']=$externalData['TRABISORGANIZATION'];
-                $additional['TRABISTAXOFFICE']=$externalData['TRABISTAXOFFICE'];
-                $additional['TRABISTAXNUMBER']=$externalData['TRABISTAXNUMBER'];
+            if($isCompany){
+                $additional['TRABISORGANIZATION'] = isset($externalData['TRABISORGANIZATION']) ? trim($externalData['TRABISORGANIZATION']) : '';
+                $additional['TRABISTAXOFFICE']    = isset($externalData['TRABISTAXOFFICE']) ? trim($externalData['TRABISTAXOFFICE']) : '';
+                $additional['TRABISTAXNUMBER']    = isset($externalData['TRABISTAXNUMBER']) ? trim($externalData['TRABISTAXNUMBER']) : '';
+
+                if(strlen($additional['TRABISORGANIZATION']) < 1){
+                    $additional['TRABISORGANIZATION'] = $registrantInfo['Company'];
+                }
+
+                $missing = [];
+                if(strlen($additional['TRABISTAXOFFICE']) < 1){ $missing[] = 'Company Tax Office (TRABISTAXOFFICE)'; }
+                if(strlen($additional['TRABISTAXNUMBER']) < 1){ $missing[] = 'Company Tax Number (TRABISTAXNUMBER)'; }
             }else{
-                $additional['TRABISNAMESURNAME']=$externalData['TRABISNAMESURNAME'];
-                $additional['TRABISCITIZIENID']=$externalData['TRABISCITIZIENID'];
+                $additional['TRABISNAMESURNAME'] = isset($externalData['TRABISNAMESURNAME']) ? trim($externalData['TRABISNAMESURNAME']) : '';
+                $additional['TRABISCITIZIENID']  = isset($externalData['TRABISCITIZIENID']) ? trim($externalData['TRABISCITIZIENID']) : '';
+
+                if(strlen($additional['TRABISNAMESURNAME']) < 1){
+                    $additional['TRABISNAMESURNAME'] = trim($registrantInfo['FirstName'] . ' ' . $registrantInfo['LastName']);
+                }
+
+                $missing = [];
+                if(strlen($additional['TRABISCITIZIENID']) < 1){ $missing[] = 'Citizen ID (TRABISCITIZIENID)'; }
             }
+
+            // Fail with the actual cause instead of letting the registry answer
+            // "An invalid TLD attribute value was entered".
+            if(!empty($missing)){
+                $error = 'Missing required .tr registration field(s) for the "' . $category . '" category: ' . implode(', ', $missing);
+
+                $this->addError($error);
+                $this->logAction(array(
+                    'action' => 'Domain Register',
+                    'result' => false,
+                    'change' => false,
+                    'error'  => $error
+                ));
+
+                return false;
+            }
+
+            // Empty attributes are rejected by the registry as invalid values.
+            $additional = array_filter($additional, function($v){ return strlen(trim((string)$v)) > 0; });
         }
 
 
