@@ -34,8 +34,8 @@ Modulu aktivləşdirdikdən sonra modul konfiqurasiya səhifəsinə yönləndiri
 Konfiqurasiya sahələrini doldurun:
 
 - Tətbiqin adı
-- İstifadəçi adı
-- Şifrə
+- Reseller ID
+- API Key
 
 Daha sonra nameserver'larınızı əlavə etməyə keçin:
 
@@ -46,19 +46,10 @@ HostBill'in bağlana bilməsini yoxlamaq üçün Test Konfiqurasiyasını istifa
 
 Yeni Tətbiq Əlavə Et'e vurun.
 
-## 🔑 API Məlumatları — İstifadəçi adı/Şifrə, yoxsa Reseller ID/API Key?
-
-Hər ikisi dəstəklənir — məlumatları modulda eyni iki sahəyə daxil edin; modul hansı API-nin istifadə olunacağını avtomatik müəyyən edir:
-
-| Sizdə olan | "İstifadəçi adı" sahəsi | "Şifrə" sahəsi | İstifadə olunan API |
-|---|---|---|---|
-| **Yeni panel məlumatları** (tövsiyə olunur) | Reseller ID — `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` formatında UUID | API Key | REST |
-| **Köhnə (legacy) məlumatlar** | API istifadəçi adı | API şifrəsi | SOAP |
+## 🔑 API Məlumatları
 
 > 💡 **Reseller ID** və **API Key** məlumatlarınızı DomainNameAPI panelinizdə **API Parametrləri** bölməsində tapa bilərsiniz.
-> ⚠️ Bunlar **API məlumatlarıdır** — panelə giriş üçün istifadə etdiyiniz e-poçt və şifrə burada **işləməyəcək**.
-
-Əlavə konfiqurasiya tələb olunmur — istifadəçi adı sahəsində UUID varsa, modul müasir REST API-dən, əks halda klassik SOAP-dan istifadə edir.
+> ⚠️ Bunlar **API məlumatlarıdır** — panelə giriş məlumatlarınız burada **işləməyəcək**.
 
 # Domen İmportu
 

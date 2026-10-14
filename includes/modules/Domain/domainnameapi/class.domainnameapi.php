@@ -47,13 +47,13 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
 
     protected $lang = [
         'english' => [
-            'username' => 'User Name',
-            'password' => 'Password',
+            'username' => 'Reseller ID',
+            'password' => 'API Key',
             'testmode' => 'Use Test Mode',
         ],
         'turkish' => [
-            'username' => 'Kullanıcı Adı',
-            'password' => 'Şifre',
+            'username' => 'Reseller ID',
+            'password' => 'API Anahtarı',
             'testmode' => 'Test Modu',
         ]
     ];

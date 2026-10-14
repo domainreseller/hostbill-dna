@@ -34,8 +34,8 @@ Sobald Sie das Modul aktivieren, werden Sie zur Modulkonfigurationsseite weiterg
 Füllen Sie die Konfigurationsfelder aus:
 
 - Name der Anwendung
-- Benutzername
-- Passwort
+- Reseller ID
+- API Key
 
 Fahren Sie dann mit der Hinzufügung Ihrer Nameserver fort:
 
@@ -46,19 +46,10 @@ Verwenden Sie die Testkonfiguration, um zu überprüfen, ob HostBill eine Verbin
 
 Klicken Sie auf Neue App hinzufügen.
 
-## 🔑 API-Zugangsdaten — Benutzername/Passwort oder Reseller ID/API Key?
-
-Beides wird unterstützt — tragen Sie die Daten in dieselben zwei Modulfelder ein; das Modul erkennt automatisch, welche API verwendet wird:
-
-| Sie haben | Feld "Benutzername" | Feld "Passwort" | Verwendete API |
-|---|---|---|---|
-| **Neue Panel-Zugangsdaten** (empfohlen) | Reseller ID — UUID wie `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` | API Key | REST |
-| **Alte (Legacy-)Zugangsdaten** | API-Benutzername | API-Passwort | SOAP |
+## 🔑 API-Zugangsdaten
 
 > 💡 Ihre **Reseller ID** und Ihren **API Key** finden Sie in Ihrem DomainNameAPI-Panel unter **API-Einstellungen**.
-> ⚠️ Dies sind **API-Zugangsdaten** — Ihre Panel-Login-E-Mail und das zugehörige Passwort funktionieren hier **nicht**.
-
-Es ist keine zusätzliche Konfiguration erforderlich — enthält das Benutzernamen-Feld eine UUID, verwendet das Modul die moderne REST-API, andernfalls klassisches SOAP.
+> ⚠️ Dies sind **API-Zugangsdaten** — Ihre Panel-Login-Daten funktionieren hier **nicht**.
 
 # Domain-Import
 

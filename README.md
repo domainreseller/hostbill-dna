@@ -34,8 +34,8 @@ Modülü aktifleştirdikten sonra modül konfigürasyon sayfasına yönlendirili
 Konfigürasyon alanlarını doldurun:
 
 - Uygulamanın adı
-- Kullanıcı adı
-- Parola
+- Reseller ID
+- API Key
 
 Daha sonra nameserver'larınızı eklemeye geçin:
 
@@ -46,19 +46,10 @@ HostBill'in bağlanıp bağlanamadığını kontrol etmek için Test Konfigüras
 
 Yeni Uygulama Ekle'ye tıklayın.
 
-## 🔑 API Bilgileri — Kullanıcı Adı/Şifre mi, Reseller ID/API Key mi?
-
-Her ikisi de desteklenir — bilgileri modüldeki aynı iki alana girin; modül hangi API'nin kullanılacağını otomatik olarak algılar:
-
-| Elinizdeki bilgi | "Kullanıcı Adı" alanı | "Parola" alanı | Kullanılan API |
-|---|---|---|---|
-| **Yeni panel bilgileri** (önerilen) | Reseller ID — `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` formatında UUID | API Key | REST |
-| **Eski (legacy) bilgiler** | API kullanıcı adı | API şifresi | SOAP |
+## 🔑 API Bilgileri
 
 > 💡 **Reseller ID** ve **API Key** bilgilerinizi DomainNameAPI panelinizde **API Ayarları** bölümünde bulabilirsiniz.
-> ⚠️ Bunlar **API bilgileridir** — panele giriş yaptığınız e-posta/şifre burada **ÇALIŞMAZ**; API Ayarları bölümündeki Reseller ID (UUID) ve API Key kullanılmalıdır.
-
-Ekstra bir yapılandırma gerekmez — kullanıcı adı alanında bir UUID varsa modül modern REST API'yi, aksi halde klasik SOAP'ı kullanır.
+> ⚠️ Bunlar **API bilgileridir** — panele giriş bilgileriniz (e-posta) burada **ÇALIŞMAZ**; API Ayarları bölümündeki Reseller ID ve API Key kullanılmalıdır.
 
 # Alan adı içe aktarımı
 

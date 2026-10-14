@@ -33,8 +33,8 @@
 填写配置字段：
 
 - 应用程序名称
-- 用户名
-- 密码
+- Reseller ID
+- API Key
 
 然后继续添加您的域名服务器：
 
@@ -45,19 +45,10 @@
 
 点击添加新应用程序。
 
-## 🔑 API 凭据 — 用户名/密码还是 Reseller ID/API Key？
-
-两者均受支持 — 将凭据填入模块的同两个字段即可；模块会自动检测应使用哪种 API：
-
-| 您拥有的凭据 | "用户名"字段 | "密码"字段 | 使用的 API |
-|---|---|---|---|
-| **新版面板凭据**（推荐） | Reseller ID — 形如 `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` 的 UUID | API Key | REST |
-| **旧版（legacy）凭据** | API 用户名 | API 密码 | SOAP |
+## 🔑 API 凭据
 
 > 💡 您可以在 DomainNameAPI 面板的 **API 设置** 中找到您的 **Reseller ID** 和 **API Key**。
-> ⚠️ 这些是 **API 凭据** — 您登录面板所用的邮箱和密码在此**无法使用**。
-
-无需任何额外配置 — 如果用户名字段填写的是 UUID，模块将使用现代 REST API，否则使用经典 SOAP。
+> ⚠️ 这些是 **API 凭据** — 您的面板登录凭据在此**无法使用**。
 
 # 域名导入
 

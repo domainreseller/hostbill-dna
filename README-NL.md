@@ -32,8 +32,8 @@ Zodra u de module activeert, wordt u doorgestuurd naar de module configuratiepag
 Vul de configuratievelden in:
 
 - Naam van de toepassing
-- Gebruikersnaam
-- Wachtwoord
+- Reseller ID
+- API Key
 
 Ga vervolgens verder met het toevoegen van uw nameservers:
 
@@ -44,19 +44,10 @@ Gebruik de Test Configuratie om te controleren of HostBill kan verbinden.
 
 Klik op Nieuwe App toevoegen.
 
-## 🔑 API-gegevens — Gebruikersnaam/Wachtwoord of Reseller ID/API Key?
-
-Beide worden ondersteund — voer ze in dezelfde twee modulevelden in; de module detecteert automatisch welke API wordt gebruikt:
-
-| U heeft | Veld "Gebruikersnaam" | Veld "Wachtwoord" | Gebruikte API |
-|---|---|---|---|
-| **Nieuwe panelgegevens** (aanbevolen) | Reseller ID — UUID zoals `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` | API Key | REST |
-| **Oude (legacy) gegevens** | API-gebruikersnaam | API-wachtwoord | SOAP |
+## 🔑 API-gegevens
 
 > 💡 U vindt uw **Reseller ID** en **API Key** in uw DomainNameAPI-paneel onder **API-instellingen**.
-> ⚠️ Dit zijn **API-gegevens** — het e-mailadres en wachtwoord waarmee u op het paneel inlogt, werken hier **niet**.
-
-Er is geen extra configuratie nodig — als het gebruikersnaamveld een UUID bevat, gebruikt de module de moderne REST API, anders klassiek SOAP.
+> ⚠️ Dit zijn **API-gegevens** — uw inloggegevens voor het paneel werken hier **niet**.
 
 # Domein Import
 

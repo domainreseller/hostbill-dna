@@ -34,8 +34,8 @@ Once you activate the module you will be redirected to module configuration page
 Fill in the configuration fields:
 
 - Name of the application
-- Username
-- Password
+- Reseller ID
+- API Key
 
 Then proceed to adding your nameservers:
 
@@ -46,19 +46,10 @@ Use Test Configuration to check if HostBill can connect.
 
 Click on Add New App.
 
-## 🔑 API Credentials — Username/Password or Reseller ID/API Key?
-
-Both are supported — enter them into the same two module fields; the module detects which API to use automatically:
-
-| You have | "Username" field | "Password" field | API used |
-|---|---|---|---|
-| **New panel credentials** (recommended) | Reseller ID — UUID like `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` | API Key | REST |
-| **Legacy credentials** | API username | API password | SOAP |
+## 🔑 API Credentials
 
 > 💡 Find your **Reseller ID** and **API Key** in your DomainNameAPI panel under **API Settings**.
-> ⚠️ These are **API credentials** — your panel login e-mail and password will **not** work here.
-
-No extra configuration is needed — if the username field contains a UUID the module uses the modern REST API, otherwise classic SOAP.
+> ⚠️ These are **API credentials** — your panel login credentials will **not** work here.
 
 # Domain Import
 

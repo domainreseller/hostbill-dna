@@ -34,8 +34,8 @@ Une fois le module activé, vous serez redirigé vers la page de configuration d
 Remplissez les champs de configuration:
 
 - Nom de l'application
-- Nom d'utilisateur
-- Mot de passe
+- Reseller ID
+- API Key
 
 Puis procédez à l'ajout de vos serveurs de noms:
 
@@ -46,19 +46,10 @@ Utilisez la configuration de test pour vérifier si HostBill peut se connecter.
 
 Cliquez sur Ajouter une nouvelle application.
 
-## 🔑 Identifiants API — Nom d'utilisateur/Mot de passe ou Reseller ID/API Key ?
-
-Les deux sont pris en charge — saisissez-les dans les deux mêmes champs du module ; le module détecte automatiquement quelle API utiliser :
-
-| Vous disposez de | Champ « Nom d'utilisateur » | Champ « Mot de passe » | API utilisée |
-|---|---|---|---|
-| **Nouveaux identifiants du panneau** (recommandé) | Reseller ID — UUID de la forme `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` | API Key | REST |
-| **Identifiants hérités (legacy)** | Nom d'utilisateur API | Mot de passe API | SOAP |
+## 🔑 Identifiants API
 
 > 💡 Vous trouverez votre **Reseller ID** et votre **API Key** dans votre panneau DomainNameAPI, section **Paramètres API**.
-> ⚠️ Ce sont des **identifiants API** — l'e-mail et le mot de passe de connexion à votre panneau ne fonctionneront **pas** ici.
-
-Aucune configuration supplémentaire n'est nécessaire — si le champ nom d'utilisateur contient un UUID, le module utilise l'API REST moderne, sinon le SOAP classique.
+> ⚠️ Ce sont des **identifiants API** — vos identifiants de connexion au panneau ne fonctionneront **pas** ici.
 
 # Importation de domaines
 
