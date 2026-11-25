@@ -87,6 +87,7 @@ class domainnameapi extends DomainModule implements  DomainModuleContacts, Domai
 
         if($this->dna==null){
             $this->dna = new \DomainNameApi\DomainNameAPI_PHPLibrary($this->configuration['username']['value'],$this->configuration['password']['value'],$testmode);
+            if (method_exists($this->dna, 'setClientInfo')) { $this->dna->setClientInfo('hostbill', $this->version); }
         }
 
         return $this->dna;
